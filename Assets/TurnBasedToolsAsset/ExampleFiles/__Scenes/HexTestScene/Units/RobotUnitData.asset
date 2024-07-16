@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8799e2e784b401c48847ec36ca81080f, type: 3}
+  m_Name: RobotUnitData
+  m_EditorClassIdentifier: 
+  m_UnitName: Robot
+  m_Model: {fileID: 1540510336354202, guid: d0aaa5ca93c561c46b89cd9b57537a81, type: 2}
+  m_UnitClass: GridUnit
+  m_IdleAnimation: {fileID: 7400000, guid: 7af6405faebc1bf499c21acf64b2c468, type: 2}
+  m_MovementAnimation: {fileID: 7400000, guid: ed9a68c784eb6a14a95b4e408ef3a00e, type: 2}
+  m_DamagedAnimation: {fileID: 7400000, guid: 7d14f1424f4e03e4d8c739dd8fce341e, type: 2}
+  m_HealAnimation: {fileID: 7400000, guid: dab20310bb932d0449e57a972420348c, type: 2}
+  m_TravelSound: {fileID: 8300000, guid: 3d797c78ff6150d40b72cc2fe2708fdb, type: 3}
+  m_DamagedSound: {fileID: 8300000, guid: bb0b4a8226597d94d817c97141bffa19, type: 3}
+  m_HealSound: {fileID: 8300000, guid: cb3c61d10d8afb446ac224c24b4dfe8a, type: 3}
+  m_DeathSound: {fileID: 8300000, guid: 260f48b8a96e77f468c6fffdfc46b124, type: 3}
+  m_bLookAtTargets: 1
+  m_bIsFlying: 0
+  m_HeightOffset: 2
+  m_MovementShape: {fileID: 11400000, guid: 49430a039d5e81849ba23426634f8f3a, type: 2}
+  m_Abilities:
+  - unitAbility: {fileID: 11400000, guid: f748fc8441bdbb84f90e100375f35cc7, type: 2}
+    AssociatedAnimation: {fileID: 7400000, guid: 46842d74c8a1fc94ba379f3f2b10fdd7,
+      type: 2}
+    ExecuteAfterTime: 1
+    AudioOnStart: {fileID: 8300000, guid: 3031bb7a346d2f74288abaa60ed54b72, type: 3}
+    AudioOnExecute: {fileID: 0}
+  - unitAbility: {fileID: 11400000, guid: 4f71507c3d79b0e4cbc95f52f51e2870, type: 2}
+    AssociatedAnimation: {fileID: 7400000, guid: 710e8326a4802f445b5fd6f2c9ad35ea,
+      type: 2}
+    ExecuteAfterTime: 0.4
+    AudioOnStart: {fileID: 0}
+    AudioOnExecute: {fileID: 8300000, guid: df597f6135890f143841c904b5ccfc22, type: 3}
+  - unitAbility: {fileID: 11400000, guid: 44d351c522e269e448b987d28fd6a648, type: 2}
+    AssociatedAnimation: {fileID: 7400000, guid: 710e8326a4802f445b5fd6f2c9ad35ea,
+      type: 2}
+    ExecuteAfterTime: 0.4
+    AudioOnStart: {fileID: 0}
+    AudioOnExecute: {fileID: 8300000, guid: 2cd2ad2f0c837f8498ae5e5fcc45475d, type: 3}
+  - unitAbility: {fileID: 11400000, guid: 46608b2a9f8e6b340becf9bae2f2a027, type: 2}
+    AssociatedAnimation: {fileID: 0}
+    ExecuteAfterTime: 0
+    AudioOnStart: {fileID: 0}
+    AudioOnExecute: {fileID: 0}
+  m_SpawnOnHeal:
+  - {fileID: 114245873700466434, guid: aa325c3ee54ace348b5512599a896715, type: 2}
+  m_MovementPoints: 5
+  m_AbilityPoints: 5
+  m_Health: 10
+  m_Armor: 5
+  m_MagicalArmor: 5

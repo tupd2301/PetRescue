@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8799e2e784b401c48847ec36ca81080f, type: 3}
+  m_Name: MobileEnemyRobotUnitData
+  m_EditorClassIdentifier: 
+  m_UnitName: Enemy Robot
+  m_Model: {fileID: 1540510336354202, guid: 61ba2f0c5c1932a4eb251b62ef69cbdb, type: 2}
+  m_UnitClass: GridUnit
+  m_IdleAnimation: {fileID: 7400000, guid: 7af6405faebc1bf499c21acf64b2c468, type: 2}
+  m_MovementAnimation: {fileID: 7400000, guid: ed9a68c784eb6a14a95b4e408ef3a00e, type: 2}
+  m_DamagedAnimation: {fileID: 7400000, guid: 7d14f1424f4e03e4d8c739dd8fce341e, type: 2}
+  m_HealAnimation: {fileID: 7400000, guid: dab20310bb932d0449e57a972420348c, type: 2}
+  m_TravelSound: {fileID: 8300000, guid: 3d797c78ff6150d40b72cc2fe2708fdb, type: 3}
+  m_DamagedSound: {fileID: 8300000, guid: bb0b4a8226597d94d817c97141bffa19, type: 3}
+  m_HealSound: {fileID: 8300000, guid: cb3c61d10d8afb446ac224c24b4dfe8a, type: 3}
+  m_DeathSound: {fileID: 8300000, guid: 260f48b8a96e77f468c6fffdfc46b124, type: 3}
+  m_bLookAtTargets: 1
+  m_bIsFlying: 0
+  m_HeightOffset: 2
+  m_MovementShape: {fileID: 11400000, guid: 49430a039d5e81849ba23426634f8f3a, type: 2}
+  m_Abilities:
+  - unitAbility: {fileID: 11400000, guid: f748fc8441bdbb84f90e100375f35cc7, type: 2}
+    AssociatedAnimation: {fileID: 7400000, guid: 46842d74c8a1fc94ba379f3f2b10fdd7,
+      type: 2}
+    ExecuteAfterTime: 1
+    AudioOnStart: {fileID: 8300000, guid: 3031bb7a346d2f74288abaa60ed54b72, type: 3}
+    AudioOnExecute: {fileID: 0}
+  m_SpawnOnHeal: []
+  m_MovementPoints: 5
+  m_AbilityPoints: 5
+  m_Health: 10
+  m_Armor: 0
+  m_MagicalArmor: 0

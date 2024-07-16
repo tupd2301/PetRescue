@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: dd17a7784c9f1334c8be073ca2391c57
+timeCreated: 1569110612
+licenseType: Store
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dubai
+  fontNames:
+  - Dubai
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1d3b2122cea3dbd41887b72d766ace78, type: 3}
+  - {fileID: 12800000, guid: 6f07bd366e7b7e14e97e78c80dbb3450, type: 3}
+  - {fileID: 12800000, guid: 72d237aaccd380e4d9469bee1d2a7667, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

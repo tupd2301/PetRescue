@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3f4de7747e6ea4f97151e7ce01773f, type: 3}
+  m_Name: EnemyTeamData
+  m_EditorClassIdentifier: 
+  m_AISpawnUnits:
+  - m_SpawnAtCellId: EnemySpawnPoint1
+    m_UnitData: {fileID: 11400000, guid: c69de7903d49d6c48b4faa84b8f73682, type: 2}
+    m_AssociatedAI: {fileID: 11400000, guid: 9ac4a1d5e5e5c764e9652056eb0ca224, type: 2}
+    m_StartDirection: 6
+    m_bIsATarget: 0
+  - m_SpawnAtCellId: EnemySpawnPoint2
+    m_UnitData: {fileID: 11400000, guid: c69de7903d49d6c48b4faa84b8f73682, type: 2}
+    m_AssociatedAI: {fileID: 11400000, guid: 9ac4a1d5e5e5c764e9652056eb0ca224, type: 2}
+    m_StartDirection: 2
+    m_bIsATarget: 0
+  - m_SpawnAtCellId: EnemySpawnPoint4
+    m_UnitData: {fileID: 11400000, guid: ee398a4d397e9bb4facdabbac19d9752, type: 2}
+    m_AssociatedAI: {fileID: 11400000, guid: 30ea05ea654b36e42a8eb0078048c23a, type: 2}
+    m_StartDirection: 0
+    m_bIsATarget: 1

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a8fc16a6414384cb20763704092801, type: 3}
+  m_Name: DefeatAllTargets
+  m_EditorClassIdentifier: 
+  m_ConditionName: Defeat Targets
+  m_Description: Defeat all targets.
+  m_Icon: {fileID: 2800000, guid: f184e42877ec3154c87dfd085ac14461, type: 3}
+  m_bCheckWinFirst: 1
+  m_bCheckFriendlyTeam: 1
+  m_bCheckHostileTeam: 1

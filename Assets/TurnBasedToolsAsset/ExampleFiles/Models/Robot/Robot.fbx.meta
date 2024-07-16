@@ -1,0 +1,217 @@
+fileFormatVersion: 2
+guid: 6453a98cda2b2d14186c7efc0d256b9d
+timeCreated: 1570596040
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Camera
+    100004: Cube
+    100006: Cube.001
+    100008: Cube.002
+    100010: Cube.003
+    100012: head
+    100014: head_end
+    100016: hip
+    100018: Icosphere
+    100020: Icosphere.001
+    100022: l.arm
+    100024: l.hand
+    100026: l.hand.001
+    100028: l.hand.002
+    100030: l.hand.003
+    100032: l.hand.003_end
+    100034: l.hand.004
+    100036: l.hand.005
+    100038: l.hand.006
+    100040: l.hand.006_end
+    100042: l.hand.007
+    100044: l.hand.008
+    100046: l.hand.009
+    100048: l.hand.009_end
+    100050: l.hand.010
+    100052: l.hand.011
+    100054: l.hand.012
+    100056: l.hand.012_end
+    100058: l.hand.013
+    100060: l.hand.014
+    100062: l.hand.015
+    100064: l.hand.015_end
+    100066: l.shoulder
+    100068: l.upperarm
+    100070: Lamp
+    100072: neck
+    100074: r.arm
+    100076: r.hand
+    100078: r.hand.001
+    100080: r.hand.002
+    100082: r.hand.003
+    100084: r.hand.003_end
+    100086: r.hand.004
+    100088: r.hand.005
+    100090: r.hand.006
+    100092: r.hand.007
+    100094: r.hand.008
+    100096: r.hand.009
+    100098: r.hand.010
+    100100: r.hand.011
+    100102: r.hand.012
+    100104: r.hand.012_end
+    100106: r.hand.013
+    100108: r.hand.013_end
+    100110: r.hand.014
+    100112: r.hand.014_end
+    100114: r.hand.015
+    100116: r.hand.015_end
+    100118: r.shoulder
+    100120: r.upperarm
+    100122: //RootNode
+    100124: upperbody
+    400000: Armature
+    400002: Camera
+    400004: Cube
+    400006: Cube.001
+    400008: Cube.002
+    400010: Cube.003
+    400012: head
+    400014: head_end
+    400016: hip
+    400018: Icosphere
+    400020: Icosphere.001
+    400022: l.arm
+    400024: l.hand
+    400026: l.hand.001
+    400028: l.hand.002
+    400030: l.hand.003
+    400032: l.hand.003_end
+    400034: l.hand.004
+    400036: l.hand.005
+    400038: l.hand.006
+    400040: l.hand.006_end
+    400042: l.hand.007
+    400044: l.hand.008
+    400046: l.hand.009
+    400048: l.hand.009_end
+    400050: l.hand.010
+    400052: l.hand.011
+    400054: l.hand.012
+    400056: l.hand.012_end
+    400058: l.hand.013
+    400060: l.hand.014
+    400062: l.hand.015
+    400064: l.hand.015_end
+    400066: l.shoulder
+    400068: l.upperarm
+    400070: Lamp
+    400072: neck
+    400074: r.arm
+    400076: r.hand
+    400078: r.hand.001
+    400080: r.hand.002
+    400082: r.hand.003
+    400084: r.hand.003_end
+    400086: r.hand.004
+    400088: r.hand.005
+    400090: r.hand.006
+    400092: r.hand.007
+    400094: r.hand.008
+    400096: r.hand.009
+    400098: r.hand.010
+    400100: r.hand.011
+    400102: r.hand.012
+    400104: r.hand.012_end
+    400106: r.hand.013
+    400108: r.hand.013_end
+    400110: r.hand.014
+    400112: r.hand.014_end
+    400114: r.hand.015
+    400116: r.hand.015_end
+    400118: r.shoulder
+    400120: r.upperarm
+    400122: //RootNode
+    400124: upperbody
+    4300000: Cube.002
+    4300002: Icosphere
+    4300004: Cube
+    4300006: Cube.001
+    4300008: Icosphere.001
+    4300010: Cube.003
+    9500000: //RootNode
+    13700000: Cube
+    13700002: Cube.001
+    13700004: Cube.002
+    13700006: Cube.003
+    13700008: Icosphere
+    13700010: Icosphere.001
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
+      human bone 'LeftUpperLeg' not found\n"
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: Armature
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

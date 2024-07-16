@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1105 &110500000
+HumanTemplate:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: RobotMapping
+  m_BoneTemplate:
+    Chest: upperbody
+    Head: head
+    Hips: hip
+    Left Index Distal: l.hand.015
+    Left Index Intermediate: l.hand.014
+    Left Index Proximal: l.hand.013
+    Left Little Distal: l.hand.006
+    Left Little Intermediate: l.hand.005
+    Left Little Proximal: l.hand.004
+    Left Middle Distal: l.hand.012
+    Left Middle Intermediate: l.hand.011
+    Left Middle Proximal: l.hand.010
+    Left Ring Distal: l.hand.009
+    Left Ring Intermediate: l.hand.008
+    Left Ring Proximal: l.hand.007
+    Left Thumb Distal: l.hand.003
+    Left Thumb Intermediate: l.hand.002
+    Left Thumb Proximal: l.hand.001
+    LeftHand: l.hand
+    LeftLowerArm: l.arm
+    LeftShoulder: l.shoulder
+    LeftUpperArm: l.upperarm
+    Neck: neck
+    Right Index Distal: r.hand.015
+    Right Index Intermediate: r.hand.008
+    Right Index Proximal: r.hand.004
+    Right Little Distal: r.hand.012
+    Right Little Intermediate: r.hand.011
+    Right Little Proximal: r.hand.006
+    Right Middle Distal: r.hand.014
+    Right Middle Intermediate: r.hand.009
+    Right Middle Proximal: r.hand.005
+    Right Ring Distal: r.hand.013
+    Right Ring Intermediate: r.hand.010
+    Right Ring Proximal: r.hand.007
+    Right Thumb Distal: r.hand.003
+    Right Thumb Intermediate: r.hand.002
+    Right Thumb Proximal: r.hand.001
+    RightHand: r.hand
+    RightLowerArm: r.arm
+    RightShoulder: r.shoulder
+    RightUpperArm: r.upperarm

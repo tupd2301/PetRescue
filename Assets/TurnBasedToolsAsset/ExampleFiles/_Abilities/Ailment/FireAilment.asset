@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93df148e95a633c4799acca8dba0abdd, type: 3}
+  m_Name: FireAilment
+  m_EditorClassIdentifier: 
+  m_AilmentName: Fire
+  m_Description: Applies Fire damage for 2 turns.
+  m_NumEffectedTurns: 2
+  m_ExecuteOnStartOfTurn:
+    m_SpawnOnReciever:
+    - {fileID: 114245873700466434, guid: 770e105e844eb1d4397de8adc5551f81, type: 2}
+    m_Params:
+    - {fileID: 11400000, guid: 09bbe15dce1e3a144a56c1a626978692, type: 2}
+  m_ExecuteOnEndOfTurn:
+    m_SpawnOnReciever: []
+    m_Params: []

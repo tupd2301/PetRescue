@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92129e6bc9018ce468039aae7d4df5b3, type: 3}
+  m_Name: HealTeamMember
+  m_EditorClassIdentifier: 
+  m_AbilityName: Heal Team Member
+  m_Icon: {fileID: 2800000, guid: 15f9c25b7a7eafc4dbfc8659cb70d2f9, type: 3}
+  m_Radius: 0
+  m_ActionPointCost: 4
+  m_bAllowBlocked: 0
+  m_EffectedTeam: 1
+  m_EffectedType: 0
+  m_AbilityShape: {fileID: 11400000, guid: 740284e106d519e4ea9b95c303012027, type: 2}
+  m_EffectShape: {fileID: 0}
+  m_EffectRadius: 0
+  m_SpawnOnCaster: []
+  m_SpawnOnTarget: []
+  m_Params:
+  - {fileID: 11400000, guid: de28dd142747df44d8534729886fb32e, type: 2}
+  m_Ailments: []
