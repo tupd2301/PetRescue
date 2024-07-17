@@ -7,11 +7,11 @@ public class BaseManager : MonoBehaviour
 {
     [SerializeField] private GameObject basePrefab;
 
-    private List<Base> bases = new List<Base>();
+    public List<BaseData> bases = new List<BaseData>();
 
     private List<int> boardDesign = new List<int>();
 
-    void Start()
+    public void Init()
     {
         boardDesign = new List<int> { 3,4,5,4,3};
         CreateBoard(boardDesign);
@@ -19,7 +19,7 @@ public class BaseManager : MonoBehaviour
 
     public void CreateBoard(List<int> board)
     {
-        bases = new List<Base>();
+        bases = new List<BaseData>();
         int middle = board.Count / 2;
         for (int i = -middle; i < middle + 1; i++)
         {
@@ -33,7 +33,7 @@ public class BaseManager : MonoBehaviour
                 baseObj.transform.localEulerAngles = new Vector3(0, 90, 0);
                 baseObj.name = "Base (" + i + "," + j+")";
                 baseObj.SetActive(false);
-                Base newBase = new Base();
+                BaseData newBase = new BaseData();
                 newBase.id = i*middle + j;
                 newBase.coordinates = new Vector2(i, j);
                 newBase.obj = baseObj;
@@ -53,9 +53,9 @@ public class BaseManager : MonoBehaviour
     IEnumerator CallAnimationSpawn()
     {
         int currentX = 0;
-        List<Base> sortedList = bases.OrderBy(x => x.coordinates.x).ToList();
+        List<BaseData> sortedList = bases.OrderBy(x => x.coordinates.x).ToList();
         currentX = (int)sortedList[0].coordinates.x;
-        foreach (Base item in sortedList)
+        foreach (BaseData item in sortedList)
         {
             if(currentX != (int)item.coordinates.x)
             {
@@ -68,7 +68,7 @@ public class BaseManager : MonoBehaviour
     }
 }
 [System.Serializable]
-public class Base
+public class BaseData
 {
     public int id;
     public Vector2 coordinates;

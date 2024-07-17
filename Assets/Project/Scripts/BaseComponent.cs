@@ -5,6 +5,7 @@ using UnityEngine;
 public class BaseComponent : MonoBehaviour
 {
     public GameObject spawnPoint;
+    
     [SerializeField] private List<GameObject> baseModels = new List<GameObject>();
 
     void Start()
@@ -21,5 +22,10 @@ public class BaseComponent : MonoBehaviour
     {
         baseModels.ForEach(x => x.SetActive(false));
         baseModels[0].SetActive(true);
+    }
+
+    public void OnBaseClicked()
+    {
+        GetComponent<Animator>().Play("Bounce");
     }
 }

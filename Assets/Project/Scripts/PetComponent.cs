@@ -4,5 +4,15 @@ using UnityEngine;
 
 public class PetComponent : MonoBehaviour
 {
-    
+    public PetData petData;
+
+    public void SetData(PetData petData)
+    {
+        this.petData = petData;
+    }
+
+    public void Run()
+    {
+        
+    }
 }
