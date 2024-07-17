@@ -623,15 +623,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   petModels:
-  - {fileID: 6647131506220806907, guid: 27e82c8a2f2dc474a8d10d84ae09e664, type: 3}
-  - {fileID: 1693816920450361209, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
-  - {fileID: 526445051491406407, guid: 810ac474263433e47bd7533267a256d5, type: 3}
-  - {fileID: 2356425588909462434, guid: 9dca3db7ef2697244afa1a2fa4b684c6, type: 3}
-  - {fileID: 8858668344987094152, guid: b78cbd54c6fc6404eac3c4919de1ad38, type: 3}
-  - {fileID: 7629896988078713242, guid: b36fce94519368e448b068fd7447702a, type: 3}
-  - {fileID: 3319330840629498002, guid: bcfec05f2f2a33246a92bb0b9547bb6f, type: 3}
-  - {fileID: 1069540666348384564, guid: 50bf0d89f095438448e61792c16f8bef, type: 3}
-  - {fileID: 6606228269694984071, guid: a6002dee3229d954384f4b1de9a0901d, type: 3}
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
+  - id: 0
+    model: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotationY: 0
   prefab: {fileID: 0}
 --- !u!1001 &490022251
 PrefabInstance:
