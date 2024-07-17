@@ -5,7 +5,8 @@ using UnityEngine;
 public class BaseComponent : MonoBehaviour
 {
     public GameObject spawnPoint;
-    
+    public BaseData baseData;
+
     [SerializeField] private List<GameObject> baseModels = new List<GameObject>();
 
     void Start()
@@ -26,6 +27,8 @@ public class BaseComponent : MonoBehaviour
 
     public void OnBaseClicked()
     {
-        GetComponent<Animator>().Play("Bounce");
+        GetComponentInChildren<Animator>().Play("Bounce");
+        PetComponent pet = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates);
+        if(pet) pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData));
     }
 }

@@ -20,8 +20,9 @@ public class PetManager : MonoBehaviour
         obj.transform.localPosition = new Vector3(baseData.coordinates.x * 1.75f, 1, baseData.coordinates.y * 2);
         obj.transform.localEulerAngles = new Vector3(0, 0, 0);
         PetModelData petModelData = SpawnModel(obj.transform, direction);
-        pets.Add(new PetData(id, direction, petModelData, baseData.coordinates));
-        obj.GetComponent<PetComponent>().SetData(new PetData(id, direction, petModelData, baseData.coordinates));
+        PetData petData = new PetData(id, direction, petModelData, obj.GetComponent<PetComponent>(), baseData.coordinates);
+        obj.GetComponent<PetComponent>().SetData(petData);
+        pets.Add(petData);
     }
     public PetModelData SpawnModel(Transform parent, HexDirection direction = HexDirection.Up ,PetModelData petModelData = null)
     {
@@ -34,6 +35,15 @@ public class PetManager : MonoBehaviour
         obj.transform.localEulerAngles = new Vector3(0,(int)(direction) * 60 + 30, 0);
         obj.transform.localScale = petModelData.scale;
         return petModelData;
+    }
+    public bool CheckPetExist(Vector2 coordinates)
+    {
+        if(pets.FirstOrDefault(x => x.baseCoordinates == coordinates) != null) return true;
+        return false;
+    }
+    public PetComponent GetPetByCoordinates(Vector2 coordinates)
+    {
+        return pets.FirstOrDefault(x => x.baseCoordinates == coordinates).petComponent;
     }
 }
 
@@ -55,12 +65,14 @@ public class PetData
     public HexDirection direction;
     public PetModelData petModelData;
     public Vector2 baseCoordinates;
+    public PetComponent petComponent;
 
-    public PetData(int id, HexDirection direction, PetModelData petModelData, Vector2 baseCoordinates = default(Vector2))
+    public PetData(int id, HexDirection direction, PetModelData petModelData, PetComponent petComponent, Vector2 baseCoordinates = default(Vector2))
     {
         this.id = id;
         this.direction = direction;
         this.petModelData = petModelData;
+        this.petComponent = petComponent;
         this.baseCoordinates = baseCoordinates;
     }
 
