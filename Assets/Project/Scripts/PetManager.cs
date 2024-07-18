@@ -34,6 +34,7 @@ public class PetManager : MonoBehaviour
         obj.transform.localPosition = petModelData.position;
         obj.transform.localEulerAngles = new Vector3(0,(int)(direction) * 60 + 30, 0);
         obj.transform.localScale = petModelData.scale;
+        petModelData.model = obj;
         return petModelData;
     }
     public bool CheckPetExist(Vector2 coordinates)

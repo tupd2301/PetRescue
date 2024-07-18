@@ -75,6 +75,7 @@ MonoBehaviour:
     id: 0
     coordinates: {x: 0, y: 0}
     obj: {fileID: 0}
+  isHide: 0
   baseModels:
   - {fileID: 2271366901014201384}
   - {fileID: 4109451996386634789}
@@ -333,7 +334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1223312392272001868
 RectTransform:
   m_ObjectHideFlags: 0

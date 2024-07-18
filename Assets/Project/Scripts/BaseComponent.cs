@@ -7,11 +7,13 @@ public class BaseComponent : MonoBehaviour
     public GameObject spawnPoint;
     public BaseData baseData;
 
+    public bool isHide = false;
+
     [SerializeField] private List<GameObject> baseModels = new List<GameObject>();
 
     void Start()
     {
-        
+        isHide = false;
     }
     public void RandomModel()
     {
@@ -29,6 +31,6 @@ public class BaseComponent : MonoBehaviour
     {
         GetComponentInChildren<Animator>().Play("Bounce");
         PetComponent pet = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates);
-        if(pet) pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData));
+        if(pet && !pet.isHide) pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData));
     }
 }
