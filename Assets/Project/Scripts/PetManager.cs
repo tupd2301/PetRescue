@@ -18,15 +18,26 @@ public class PetManager : MonoBehaviour
         }
         pets = new List<PetData>();
     }
-    
-    public void SpawnPets()
+    public int GetPetCount()
     {
-        SpawnPet(0, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
-        SpawnPet(1, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
-        SpawnPet(2, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
-        SpawnPet(3, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
-        SpawnPet(4, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
-        SpawnPet(5, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
+        return pets.FindAll(x => x.petComponent.isHide == false).Count;
+    }
+    public void SpawnPets(List<Vector3Int> list)
+    {
+        Reset();
+        for (int i = 0; i < list.Count; i++)
+        {
+            if(list[i].x == -1)
+            {
+                GameObject gameObj = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
+                gameObj.SetActive(false);
+                gameObj.GetComponent<BaseComponent>().isHide = true;
+                continue;
+            }
+            if(list[i].x == 0) continue;
+            Debug.Log(i + " " + list[i].x + " " + list[i].y + " " + list[i].z);
+            SpawnPet(i, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)), (HexDirection)list[i].x);
+        }
     }
     public void SpawnPet(int id, BaseData baseData, HexDirection direction = HexDirection.Up)
     {
@@ -41,16 +52,20 @@ public class PetManager : MonoBehaviour
     }
     public PetModelData SpawnModel(Transform parent, HexDirection direction = HexDirection.Up ,PetModelData petModelData = null)
     {
+        PetModelData modelData = new PetModelData();
         if(petModelData == null)
         {
             petModelData = petModelDatas[random.Next(0, petModelDatas.Count)];
         }
-        GameObject obj = Instantiate(petModelData.model, parent);
-        obj.transform.localPosition = petModelData.position;
-        obj.transform.localEulerAngles = new Vector3(0,(int)(direction) * 60 + 30, 0);
-        obj.transform.localScale = petModelData.scale;
-        petModelData.model = obj;
-        return petModelData;
+        GameObject modelObj = Instantiate(petModelData.model, parent);
+        modelObj.transform.localPosition = petModelData.position;
+        modelObj.transform.localEulerAngles = new Vector3(0,(int)(direction) * 60 - 30, 0);
+        modelObj.transform.localScale = petModelData.scale;
+        modelData.id = petModelData.id;
+        modelData.position = petModelData.position;
+        modelData.scale = petModelData.scale;
+        modelData.model = modelObj;
+        return modelData;
     }
     public bool CheckPetExist(Vector2 coordinates)
     {
@@ -66,12 +81,12 @@ public class PetManager : MonoBehaviour
 [System.Serializable]
 public enum HexDirection
 {
-    Up = 0,
-    UpRight = 1,
-    DownRight = 2,
-    Down = 3,
-    DownLeft = 4,
-    UpLeft = 5
+    Up = 1,
+    UpRight = 2,
+    DownRight = 3,
+    Down = 4,
+    DownLeft = 5,
+    UpLeft = 6
 }
 
 [System.Serializable]
@@ -82,6 +97,10 @@ public class PetData
     public PetModelData petModelData;
     public Vector2 baseCoordinates;
     public PetComponent petComponent;
+    public PetData()
+    {
+
+    }
 
     public PetData(int id, HexDirection direction, PetModelData petModelData, PetComponent petComponent, Vector2 baseCoordinates = default(Vector2))
     {
@@ -101,6 +120,11 @@ public class PetModelData
     public GameObject model;
     public Vector3 position;
     public Vector3 scale = Vector3.one;  
+
+    public PetModelData()
+    {
+        
+    }
 
     public PetModelData(int id, GameObject model, Vector3 position, Vector3 scale = default(Vector3))
     {

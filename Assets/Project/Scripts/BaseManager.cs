@@ -62,13 +62,14 @@ public class BaseManager : MonoBehaviour
     {
         List<Vector2> activeBoard = new List<Vector2>();
         int middle = board.Count / 2;
-        for (int y = middle; y >= -middle; y--)
+        int add = board.Count % 2 == 0 ? 1 : 0;
+        for (int y = middle; y >= -middle + add; y--)
         {
-            int middleBase = Mathf.FloorToInt(board[y + middle] / 2f);
-            int extraCount = board[y + middle] % 2 == 0 ? 0 : 1;
+            int middleBase = Mathf.FloorToInt(board[y + middle - add] / 2f);
+            int extraCount = board[y + middle - add] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                float extra = board[y + middle] % 2 == 0 ? 1f : 0;
+                float extra = board[y + middle - add] % 2 == 0 ? 1f : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
@@ -86,6 +87,7 @@ public class BaseManager : MonoBehaviour
         int middle = board.Count / 2;
         for (int y = middle; y >= -middle; y--)
         {
+            Debug.Log(board.Count + " " + y + " " + middle);
             int middleBase = Mathf.FloorToInt(board[y + middle] / 2f);
             int extraCount = board[y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
@@ -98,7 +100,6 @@ public class BaseManager : MonoBehaviour
                 if (y == -middle || y == middle || x == -middleBase || x == middleBase + extraCount - 1)
                 {
                     sandListVector2.Add(new Vector2(newX, y));
-                    Debug.Log(newX + " " + y);
                 }
             }
         }
@@ -108,7 +109,7 @@ public class BaseManager : MonoBehaviour
     public void CreateBoard(List<int> board, List<int> activeBoard)
     {
         List<Vector2> activeBoardList = GetActiveBoard(activeBoard);
-        List<Vector2> sandListVector2 = GetSandList(activeBoard);
+        List<Vector2> sandListVector2 = new List<Vector2>();
         bases = new List<BaseData>();
         int middle = board.Count / 2;
         for (int y = middle; y >= -middle; y--)
@@ -150,6 +151,32 @@ public class BaseManager : MonoBehaviour
         StartCoroutine(CallAnimationSpawn());
     }
 
+    public List<Vector3Int> SpawnPets(List<int> board, List<LineConfig> lineConfigs)
+    {
+        List<Vector3Int> petVector = new List<Vector3Int>();
+        int middle = board.Count / 2;
+        int add = board.Count % 2 == 0 ? 1 : 0;
+        for (int y = middle; y >= -middle + add; y--)
+        {
+            int middleBase = Mathf.FloorToInt(board[y + middle - add] / 2f);
+            int extraCount = board[y + middle - add] % 2 == 0 ? 0 : 1;
+
+            for (int x = -middleBase; x < middleBase + extraCount; x++)
+            {
+                float extra = board[y + middle - add] % 2 == 0 ? 1f : 0;
+                int newX = x;
+                if (y == -1) newX = x - y;
+                if (y < -1) newX = x - (y - 1) / 2;
+                if (y > 1) newX = x - y / 2;
+                if (y == 1) newX = x;
+                Debug.Log((y+middle-add) + "|" + (x+middleBase) + "|" + lineConfigs[Mathf.Abs(y+middle-add)].petDirections.Count);
+                petVector.Add(new Vector3Int(lineConfigs[Mathf.Abs(y+middle-add)].petDirections[x+middleBase], newX, y));
+            }
+        }
+
+        return petVector;
+    }
+
     IEnumerator CallAnimationSpawn()
     {
         int currentX = 0;
@@ -166,7 +193,8 @@ public class BaseManager : MonoBehaviour
             item.obj.GetComponent<Animator>().Play("Spawn");
             currentX = (int)item.coordinates.x;
         }
-        GamePlay.Instance.petManager.SpawnPets();
+        yield return new WaitForSeconds(0.5f);
+        GamePlay.Instance.SpawnPets();
     }
 
     int step = 0;

@@ -30,6 +30,7 @@ public class BaseComponent : MonoBehaviour
     public void OnBaseClicked()
     {
         GetComponentInChildren<Animator>().Play("Bounce");
+        if(GamePlay.Instance?.petManager.CheckPetExist(baseData.coordinates) == false) return;
         PetComponent pet = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates);
         if(pet && !pet.isHide) pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData), pet.petData.baseCoordinates);
     }
