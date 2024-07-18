@@ -18,7 +18,7 @@ public class BaseComponent : MonoBehaviour
     public void RandomModel()
     {
         baseModels.ForEach(x => x.SetActive(false));
-        int index = Random.Range(1, baseModels.Count);
+        int index = Random.Range(0, baseModels.Count);
         baseModels[index].SetActive(true);
     }
     public void SetModelSand()
@@ -31,6 +31,6 @@ public class BaseComponent : MonoBehaviour
     {
         GetComponentInChildren<Animator>().Play("Bounce");
         PetComponent pet = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates);
-        if(pet && !pet.isHide) pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData));
+        if(pet && !pet.isHide) pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData), pet.petData.baseCoordinates);
     }
 }

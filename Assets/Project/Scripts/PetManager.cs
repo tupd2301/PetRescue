@@ -9,15 +9,30 @@ public class PetManager : MonoBehaviour
     [SerializeField] private List<PetData> pets = new List<PetData>();
     [SerializeField] private GameObject prefab;
     System.Random random = new System.Random();
-    
-    public void Init()
+
+    public void Reset()
     {
-        SpawnPet(0, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(0, 0)), (HexDirection)random.Next(0, 5));
+        for (int i = 0; i < pets.Count; i++)
+        {
+            Destroy(pets[i].petComponent.gameObject);
+        }
+        pets = new List<PetData>();
+    }
+    
+    public void SpawnPets()
+    {
+        SpawnPet(0, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
+        SpawnPet(1, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
+        SpawnPet(2, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
+        SpawnPet(3, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
+        SpawnPet(4, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
+        SpawnPet(5, GamePlay.Instance.baseManager.GetRandomBaseEmpty(), (HexDirection)random.Next(0, 5));
     }
     public void SpawnPet(int id, BaseData baseData, HexDirection direction = HexDirection.Up)
     {
         GameObject obj = Instantiate(prefab, transform);
-        obj.transform.localPosition = new Vector3(baseData.coordinates.x * 1.75f, 1, baseData.coordinates.y * 2);
+        Vector3 basePos = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == baseData.coordinates).obj.transform.position;
+        obj.transform.position = new Vector3(basePos.x, 1, basePos.z);
         obj.transform.localEulerAngles = new Vector3(0, 0, 0);
         PetModelData petModelData = SpawnModel(obj.transform, direction);
         PetData petData = new PetData(id, direction, petModelData, obj.GetComponent<PetComponent>(), baseData.coordinates);
@@ -39,7 +54,7 @@ public class PetManager : MonoBehaviour
     }
     public bool CheckPetExist(Vector2 coordinates)
     {
-        if(pets.FirstOrDefault(x => x.baseCoordinates == coordinates) != null) return true;
+        if(pets.FirstOrDefault(x => x.baseCoordinates == coordinates && x.petComponent.isHide == false) != null) return true;
         return false;
     }
     public PetComponent GetPetByCoordinates(Vector2 coordinates)

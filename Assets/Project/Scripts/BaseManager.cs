@@ -14,10 +14,26 @@ public class BaseManager : MonoBehaviour
 
     private List<BaseData> sandList = new List<BaseData>();
 
-    public void Init()
+    public void Reset()
     {
-        boardDesign = new List<int> { 5, 6, 5, 6, 5 };
+        foreach (var item in bases)
+        {
+            Destroy(item.obj);
+        }
+        bases = new List<BaseData>();
+        sandList = new List<BaseData>();
+    }
+
+    public void Init(List<int> ints)
+    {
+        boardDesign = ints;
         CreateBoardEmpty(boardDesign);
+    }
+
+    public BaseData GetRandomBaseEmpty()
+    {
+        List<BaseData> list = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false && GamePlay.Instance.petManager.CheckPetExist(x.coordinates) == false).ToList();
+        return list[Random.Range(0, list.Count)];
     }
 
     private void CreateBoardEmpty(List<int> board)
@@ -25,41 +41,18 @@ public class BaseManager : MonoBehaviour
         List<int> boardEmpty = new List<int>();
         //Create
         int max = 11;
-        boardEmpty.Add(max);
-        foreach (var line in board)
-        {
-            boardEmpty.Add(max);
-        }
-        boardEmpty.Add(max);
+        boardEmpty = new List<int>(Enumerable.Repeat(max,max));
 
         //Edit
-        if (board[0] % 2 == 0)
+        for (int i = 0; i < boardEmpty.Count; i++)
         {
-            if (max % 2 == 0)
+            if (i % 2 == 0)
             {
-                boardEmpty[0] += 1;
+                boardEmpty[i] += 1;
             }
             else
             {
-                boardEmpty[0] += 0;
-            }
-        }
-        for (int i = 0; i < board.Count; i++)
-        {
-            if (board[i] % 2 == 0)
-            {
-                boardEmpty[i + 1] += 1;
-            }
-        }
-        if (board[board.Count - 1] % 2 == 0)
-        {
-            if (max % 2 == 0)
-            {
-                boardEmpty[board.Count] += 1;
-            }
-            else
-            {
-                boardEmpty[board.Count] += 0;
+                boardEmpty[i] += 0;
             }
         }
         CreateBoard(boardEmpty, board);
@@ -173,6 +166,7 @@ public class BaseManager : MonoBehaviour
             item.obj.GetComponent<Animator>().Play("Spawn");
             currentX = (int)item.coordinates.x;
         }
+        GamePlay.Instance.petManager.SpawnPets();
     }
 
     int step = 0;
