@@ -67,7 +67,7 @@ public class BaseManager : MonoBehaviour
         if(board[middle] % 2 == 0)
         {
             Vector3 pos = GamePlay.Instance.cameraParent.transform.position;
-            GamePlay.Instance.cameraParent.transform.position = new Vector3(pos.x +1, pos.y, pos.z);
+            GamePlay.Instance.cameraParent.transform.position = new Vector3(1, pos.y, pos.z);
         }
         else
         {
@@ -169,15 +169,14 @@ public class BaseManager : MonoBehaviour
                 if(baseObj.GetComponent<BaseComponent>().isHide)
                     baseObj.GetComponent<BaseComponent>().type = BaseType.Hide;
                 else
+                {
                     baseObj.GetComponent<BaseComponent>().type = BaseType.Normal;
+                   
+                }
                 if (sandListVector2.Contains(new Vector2(newX, y)))
                 {
                     baseObj.GetComponent<BaseComponent>().SetModelSand();
                     sandList.Add(newBase);
-                }
-                else
-                {
-                    baseObj.GetComponent<BaseComponent>().SetModel(0);
                 }
             }
         }
@@ -227,6 +226,7 @@ public class BaseManager : MonoBehaviour
                     yield return new WaitForSeconds(0.3f);
                 }
                 item.obj.SetActive(true);
+                item.obj.GetComponent<BaseComponent>().RandomGrassModel();
                 item.obj.GetComponent<Animator>().Play("Spawn");
                 currentX = (int)item.coordinates.x;
             }

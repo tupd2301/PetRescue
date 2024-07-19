@@ -18,21 +18,25 @@ public class BaseComponent : MonoBehaviour
     public BaseType type;
 
     [SerializeField] private List<GameObject> baseModels = new List<GameObject>();
+    [SerializeField] private List<GameObject> grassModels = new List<GameObject>();
 
     public void SetType(BaseType type)
     {
         this.type = type;
     }
 
-    public void RandomModel()
+    public void RandomGrassModel()
     {
         baseModels.ForEach(x => x.SetActive(false));
-        int index = Random.Range(0, baseModels.Count);
-        baseModels[index].SetActive(true);
+        grassModels.ForEach(x => x.SetActive(false));
+        System.Random random = new System.Random();
+        int index = random.Next(0, grassModels.Count);
+        grassModels[index].SetActive(true);
     }
     public void SetModel(int id)
     {
         baseModels.ForEach(x => x.SetActive(false));
+        grassModels.ForEach(x => x.SetActive(false));
         baseModels[id].SetActive(true);
         if (type == BaseType.SwapUpDown || type == BaseType.SwapLeftUp || type == BaseType.SwapLeftDown)
         {

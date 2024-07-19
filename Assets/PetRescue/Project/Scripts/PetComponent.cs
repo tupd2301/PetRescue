@@ -63,9 +63,14 @@ public class PetComponent : MonoBehaviour
         BaseComponent baseComponent = data.First().Value.obj.GetComponent<BaseComponent>();
         Vector3 destination = new Vector3(baseComponent.spawnPoint.transform.position.x, 1, baseComponent.spawnPoint.transform.position.z);
         petData.baseCoordinates = originCoordinates;
-        transform.DOMove(destination, 0.4f * (data.First().Key + 1))
-                .OnUpdate(() => { if (Vector3.Distance(transform.position, destination) < 0.5f) petData.petModelData.model.GetComponent<Animator>().Play("Idle_A", -1); })
-                .OnComplete(() => transform.DOMove(origin, 0.1f).OnComplete(() => petData.petModelData.model.GetComponent<Animator>().Play("Idle_A")));
+        Vector3 direction = (destination - transform.position).normalized;
+        transform.DOMove(destination - direction*1, 0.4f * (data.First().Key -1))
+                .OnComplete(() => 
+                {
+                    transform.DOMove(origin, 1f)
+                    .OnComplete(() => petData.petModelData.model.GetComponent<Animator>().Play("Idle_A"));
+                    // transform.DOLocalMoveY(5, 0.4f).OnComplete(() => transform.DOLocalMoveY(1.2f, 0.6f));
+                });
     }
 
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -64,6 +65,7 @@ public class PetManager : MonoBehaviour
                     break;
             }
         }
+        StartCoroutine(CallAnimationSpawn());
     }
     public void SpawnPet(int id, BaseData baseData, HexDirection direction = HexDirection.Up)
     {
@@ -75,6 +77,7 @@ public class PetManager : MonoBehaviour
         PetData petData = new PetData(id, direction, petModelData, obj.GetComponent<PetComponent>(), baseData.coordinates);
         obj.GetComponent<PetComponent>().SetData(petData);
         obj.GetComponent<PetComponent>().isHide = false;
+        obj.SetActive(false);
         pets.Add(petData);
     }
     public PetModelData SpawnModel(Transform parent, HexDirection direction = HexDirection.Up, PetModelData petModelData = null)
@@ -93,6 +96,25 @@ public class PetManager : MonoBehaviour
         modelData.scale = petModelData.scale;
         modelData.model = modelObj;
         return modelData;
+    }
+    IEnumerator CallAnimationSpawn()
+    {
+        List<PetData> sortedList = pets.OrderByDescending(x => x.baseCoordinates.x).ToList();
+        int i = 0;
+        foreach (PetData item in sortedList)
+        {
+            {
+                i++;
+                Transform petTransform = item.petComponent.transform;
+                if(i%1 == 0) yield return new WaitForSeconds(0.1f);
+                petTransform.localScale = Vector3.zero;
+                petTransform.DOLocalMoveY(0,0);
+                item.petComponent.gameObject.SetActive(true);
+                petTransform.DOScale(Vector3.one, 0.3f);
+                petTransform.DOLocalMoveY(3f, 0.3f).SetEase(Ease.InBounce)
+                        .OnComplete(()=>petTransform.DOLocalMoveY(1.2f, 0.3f).SetEase(Ease.OutBounce));
+            }
+        }
     }
     public bool CheckPetExist(Vector2 coordinates)
     {
