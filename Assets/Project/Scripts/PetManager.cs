@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PetManager : MonoBehaviour
@@ -27,16 +28,23 @@ public class PetManager : MonoBehaviour
         Reset();
         for (int i = 0; i < list.Count; i++)
         {
-            if(list[i].x == -1)
+            switch (list[i].x)
             {
-                GameObject gameObj = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
-                gameObj.SetActive(false);
-                gameObj.GetComponent<BaseComponent>().isHide = true;
-                continue;
+                case -1:
+                    GameObject gameObj0 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
+                    gameObj0.SetActive(false);
+                    gameObj0.GetComponent<BaseComponent>().isHide = true;
+                    break;
+                case 0:
+                    break;
+                case 10:
+                    GameObject gameObj1 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
+                    gameObj1.GetComponent<BaseComponent>().isStop = true;
+                    break;
+                default:
+                    SpawnPet(i, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)), (HexDirection)list[i].x);
+                    break;
             }
-            if(list[i].x == 0) continue;
-            Debug.Log(i + " " + list[i].x + " " + list[i].y + " " + list[i].z);
-            SpawnPet(i, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)), (HexDirection)list[i].x);
         }
     }
     public void SpawnPet(int id, BaseData baseData, HexDirection direction = HexDirection.Up)
@@ -48,18 +56,19 @@ public class PetManager : MonoBehaviour
         PetModelData petModelData = SpawnModel(obj.transform, direction);
         PetData petData = new PetData(id, direction, petModelData, obj.GetComponent<PetComponent>(), baseData.coordinates);
         obj.GetComponent<PetComponent>().SetData(petData);
+        obj.GetComponent<PetComponent>().isHide = false;
         pets.Add(petData);
     }
-    public PetModelData SpawnModel(Transform parent, HexDirection direction = HexDirection.Up ,PetModelData petModelData = null)
+    public PetModelData SpawnModel(Transform parent, HexDirection direction = HexDirection.Up, PetModelData petModelData = null)
     {
         PetModelData modelData = new PetModelData();
-        if(petModelData == null)
+        if (petModelData == null)
         {
             petModelData = petModelDatas[random.Next(0, petModelDatas.Count)];
         }
         GameObject modelObj = Instantiate(petModelData.model, parent);
         modelObj.transform.localPosition = petModelData.position;
-        modelObj.transform.localEulerAngles = new Vector3(0,(int)(direction) * 60 - 30, 0);
+        modelObj.transform.localEulerAngles = new Vector3(0, (int)(direction) * 60 - 30, 0);
         modelObj.transform.localScale = petModelData.scale;
         modelData.id = petModelData.id;
         modelData.position = petModelData.position;
@@ -69,7 +78,7 @@ public class PetManager : MonoBehaviour
     }
     public bool CheckPetExist(Vector2 coordinates)
     {
-        if(pets.FirstOrDefault(x => x.baseCoordinates == coordinates && x.petComponent.isHide == false) != null) return true;
+        if (pets.FirstOrDefault(x => x.baseCoordinates == coordinates && x.petComponent.isHide == false) != null) return true;
         return false;
     }
     public PetComponent GetPetByCoordinates(Vector2 coordinates)
@@ -119,11 +128,11 @@ public class PetModelData
     public int id;
     public GameObject model;
     public Vector3 position;
-    public Vector3 scale = Vector3.one;  
+    public Vector3 scale = Vector3.one;
 
     public PetModelData()
     {
-        
+
     }
 
     public PetModelData(int id, GameObject model, Vector3 position, Vector3 scale = default(Vector3))

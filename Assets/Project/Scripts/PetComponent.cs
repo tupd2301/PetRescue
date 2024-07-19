@@ -7,9 +7,10 @@ using System.Linq;
 
 public class PetComponent : MonoBehaviour
 {
+    [SerializeField] private GameObject _ripplesVFX;
     public PetData petData;
 
-    public bool isHide = false;
+    public bool isHide;
 
     void Start()
     {
@@ -25,19 +26,21 @@ public class PetComponent : MonoBehaviour
     {
         if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates))
         {
-            isHide = true;
-
+            
             transform.DOLocalMoveY(3f, 0.5f).OnComplete(() =>
             {
+                baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
                 transform.DOLocalMoveY(-2f, 0.5f).OnComplete(() =>
                 {
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);
                     transform.DOLocalMoveY(-0.3f, 0.3f).OnComplete(() =>
                     {
+                        isHide = true;
                         GamePlay.Instance.CheckWin();
+                        _ripplesVFX.SetActive(true);
                         Vector3 des = transform.position + (transform.position - oriPos);
                         float distance = Vector3.Distance(transform.position, des);
-                        transform.DOLocalRotate(new Vector3(0,transform.eulerAngles.x + 50, 0), 1f).SetLoops(-1, LoopType.Incremental);
+                        transform.DOLocalRotate(new Vector3(0, transform.eulerAngles.x + 50, 0), 1f).SetLoops(-1, LoopType.Incremental);
                         transform.DOMove(des, 10f * (distance / 3f))
                         .OnUpdate(() =>
                         {
@@ -67,7 +70,7 @@ public class PetComponent : MonoBehaviour
 
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
-        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates))
+        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) && !data.First().Value.obj.GetComponent<BaseComponent>().isHide)
         {
             Bounce(data, originCoordinates);
             return;

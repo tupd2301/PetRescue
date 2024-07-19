@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class BaseManager : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class BaseManager : MonoBehaviour
         List<int> boardEmpty = new List<int>();
         //Create
         int max = 11;
-        boardEmpty = new List<int>(Enumerable.Repeat(max,max));
+        boardEmpty = new List<int>(Enumerable.Repeat(max, max));
 
         //Edit
         for (int i = 0; i < boardEmpty.Count; i++)
@@ -62,14 +63,14 @@ public class BaseManager : MonoBehaviour
     {
         List<Vector2> activeBoard = new List<Vector2>();
         int middle = board.Count / 2;
-        int add = board.Count % 2 == 0 ? 1 : 0;
-        for (int y = middle; y >= -middle + add; y--)
+        int add = board.Count % 2 == 1 ? 1 : 0;
+        for (int y = middle; y > -middle - add; y--)
         {
-            int middleBase = Mathf.FloorToInt(board[y + middle - add] / 2f);
-            int extraCount = board[y + middle - add] % 2 == 0 ? 0 : 1;
+            int middleBase = Mathf.FloorToInt(board[-y + middle] / 2f);
+            int extraCount = board[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                float extra = board[y + middle - add] % 2 == 0 ? 1f : 0;
+                float extra = board[-y + middle] % 2 == 0 ? 1f : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
@@ -80,18 +81,36 @@ public class BaseManager : MonoBehaviour
         }
         return activeBoard;
     }
+    public IEnumerator SinkAll()
+    {
+        List<BaseData> sortedList = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
+        int total = sortedList.Count;
+        Debug.Log(total);
+        for (int i = 0; i < total; i++)
+        {
+            System.Random random = new System.Random();
+            int index = random.Next(0, sortedList.Count);
+            if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
+            sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f).SetEase(Ease.Linear);
+            sortedList[index].obj.GetComponent<BaseComponent>().CallSplashVFX();
+            sortedList.Remove(sortedList[index]);
+            yield return new WaitForSeconds(random.Next(0, 5) * 0.05f);
+        }
+    }
 
     public List<Vector2> GetSandList(List<int> board)
     {
         List<Vector2> sandListVector2 = new List<Vector2>();
         int middle = board.Count / 2;
-        for (int y = middle; y >= -middle; y--)
+        int add = board.Count % 2 == 1 ? 1 : 0;
+        for (int y = middle; y > -middle - add; y--)
         {
-            Debug.Log(board.Count + " " + y + " " + middle);
-            int middleBase = Mathf.FloorToInt(board[y + middle] / 2f);
-            int extraCount = board[y + middle] % 2 == 0 ? 0 : 1;
+            // Debug.Log(y +" "+ middle);
+            int middleBase = Mathf.FloorToInt(board[-y + middle] / 2f);
+            int extraCount = board[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
+                float extra = board[-y + middle] % 2 == 0 ? 1f : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
@@ -109,7 +128,7 @@ public class BaseManager : MonoBehaviour
     public void CreateBoard(List<int> board, List<int> activeBoard)
     {
         List<Vector2> activeBoardList = GetActiveBoard(activeBoard);
-        List<Vector2> sandListVector2 = new List<Vector2>();
+        List<Vector2> sandListVector2 = GetSandList(activeBoard);
         bases = new List<BaseData>();
         int middle = board.Count / 2;
         for (int y = middle; y >= -middle; y--)
@@ -155,22 +174,20 @@ public class BaseManager : MonoBehaviour
     {
         List<Vector3Int> petVector = new List<Vector3Int>();
         int middle = board.Count / 2;
-        int add = board.Count % 2 == 0 ? 1 : 0;
-        for (int y = middle; y >= -middle + add; y--)
+        int add = board.Count % 2 == 1 ? 1 : 0;
+        for (int y = middle; y > -middle - add; y--)
         {
-            int middleBase = Mathf.FloorToInt(board[y + middle - add] / 2f);
-            int extraCount = board[y + middle - add] % 2 == 0 ? 0 : 1;
-
+            int middleBase = Mathf.FloorToInt(board[-y + middle] / 2f);
+            int extraCount = board[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                float extra = board[y + middle - add] % 2 == 0 ? 1f : 0;
+                float extra = board[-y + middle] % 2 == 0 ? 1f : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
                 if (y > 1) newX = x - y / 2;
                 if (y == 1) newX = x;
-                Debug.Log((y+middle-add) + "|" + (x+middleBase) + "|" + lineConfigs[Mathf.Abs(y+middle-add)].petDirections.Count);
-                petVector.Add(new Vector3Int(lineConfigs[Mathf.Abs(y+middle-add)].petDirections[x+middleBase], newX, y));
+                petVector.Add(new Vector3Int(lineConfigs[Mathf.Abs(-y + middle)].petDirections[x + middleBase], newX, y));
             }
         }
 
@@ -184,14 +201,21 @@ public class BaseManager : MonoBehaviour
         currentX = (int)sortedList[0].coordinates.x;
         foreach (BaseData item in sortedList)
         {
-            if (item.obj.GetComponent<BaseComponent>().isHide) continue;
-            if (currentX != (int)item.coordinates.x)
+            if (item.obj.GetComponent<BaseComponent>().isHide)
             {
-                yield return new WaitForSeconds(0.3f);
+                item.obj.GetComponent<BaseComponent>().main.SetActive(false);
+                item.obj.SetActive(true);
             }
-            item.obj.SetActive(true);
-            item.obj.GetComponent<Animator>().Play("Spawn");
-            currentX = (int)item.coordinates.x;
+            else
+            {
+                if (currentX != (int)item.coordinates.x)
+                {
+                    yield return new WaitForSeconds(0.3f);
+                }
+                item.obj.SetActive(true);
+                item.obj.GetComponent<Animator>().Play("Spawn");
+                currentX = (int)item.coordinates.x;
+            }
         }
         yield return new WaitForSeconds(0.5f);
         GamePlay.Instance.SpawnPets();

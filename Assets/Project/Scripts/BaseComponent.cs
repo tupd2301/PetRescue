@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class BaseComponent : MonoBehaviour
 {
+    [SerializeField] private GameObject _splashVFX;
+    public GameObject main;
     public GameObject spawnPoint;
     public BaseData baseData;
 
     public bool isHide = false;
 
+    public bool isStop = false;
+
     [SerializeField] private List<GameObject> baseModels = new List<GameObject>();
 
-    void Start()
-    {
-        isHide = false;
-    }
     public void RandomModel()
     {
         baseModels.ForEach(x => x.SetActive(false));
         int index = Random.Range(0, baseModels.Count);
         baseModels[index].SetActive(true);
+    }
+    public void CallSplashVFX()
+    {
+        _splashVFX.SetActive(true);
     }
     public void SetModelSand()
     {

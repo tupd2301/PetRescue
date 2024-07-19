@@ -16,6 +16,8 @@ public class GamePlay : MonoBehaviour
 
     private string config;
 
+
+
     void Awake()
     {
         Instance = this;
@@ -26,7 +28,7 @@ public class GamePlay : MonoBehaviour
     void ReadConfig(string config)
     {
         List<string> levelConfigs = new List<string>();
-        string[] levelStrings = config.Split("{"); 
+        string[] levelStrings = config.Split("{");
         for (int i = 0; i < levelStrings.Length; i++)
         {
             string levelString = levelStrings[i].Split("}")[0];
@@ -36,12 +38,12 @@ public class GamePlay : MonoBehaviour
         for (int i = 1; i < levelConfigs.Count; i++)
         {
             LevelData levelData = new LevelData();
-            levelData.level = i;
+            levelData.level = i - 1;
             levelData.config = levelConfigs[i];
             List<LineConfig> lineConfigs = new List<LineConfig>();
 
             string[] lineStrings = levelConfigs[i].Split(",");
-            for (int j = 0; j < lineStrings.Length-1; j++)
+            for (int j = 0; j < lineStrings.Length - 1; j++)
             {
                 int num = Int32.Parse(lineStrings[j]);
                 LineConfig lineConfig = new LineConfig();
@@ -49,22 +51,22 @@ public class GamePlay : MonoBehaviour
                 List<int> list = new List<int>();
                 for (int k = 1; k <= num; k++)
                 {
-                    if(lineStrings.Count() <= j + k) break;
+                    if (lineStrings.Count() <= j + k) break;
                     list.Add(Int32.Parse(lineStrings[j + k]));
                 }
                 lineConfig.petDirections = list;
                 lineConfigs.Add(lineConfig);
-                j+=num;
+                j += num;
             }
             levelData.lineConfigs = lineConfigs;
-            
+
             allLevelData.Add(levelData);
         }
     }
     void Start()
     {
         baseManager.Init(allLevelData[level].boardDesign);
-        
+
     }
     public void SpawnPets()
     {
@@ -92,13 +94,23 @@ public class GamePlay : MonoBehaviour
         }
     }
 
+    public void NextLevel()
+    {
+        CancelInvoke(nameof(NextLevel));
+        if(level >= allLevelData.Count - 1) return;
+        level++;
+        Reset();
+        baseManager.Init(allLevelData[level].boardDesign);
+    }
+
     public void CheckWin()
     {
-        if(petManager.GetPetCount() == 0)
+        if (petManager.GetPetCount() == 0)
         {
-            level++;
-            Reset();
-            baseManager.Init(allLevelData[level].boardDesign);
+            Debug.Log("Win");
+            StartCoroutine(baseManager.SinkAll());
+            Invoke(nameof(NextLevel), 3f);
+
         }
     }
 
