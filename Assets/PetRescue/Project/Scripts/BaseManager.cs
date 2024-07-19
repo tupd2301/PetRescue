@@ -64,6 +64,16 @@ public class BaseManager : MonoBehaviour
         List<Vector2> activeBoard = new List<Vector2>();
         int middle = board.Count / 2;
         int add = board.Count % 2 == 1 ? 1 : 0;
+        if(board[middle] % 2 == 0)
+        {
+            Vector3 pos = GamePlay.Instance.cameraParent.transform.position;
+            GamePlay.Instance.cameraParent.transform.position = new Vector3(pos.x +1, pos.y, pos.z);
+        }
+        else
+        {
+            Vector3 pos = GamePlay.Instance.cameraParent.transform.position;
+            GamePlay.Instance.cameraParent.transform.position = new Vector3(0, pos.y, pos.z);
+        }
         for (int y = middle; y > -middle - add; y--)
         {
             int middleBase = Mathf.FloorToInt(board[-y + middle] / 2f);
@@ -185,7 +195,7 @@ public class BaseManager : MonoBehaviour
             int extraCount = board[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                int extra = board[-y + middle] % 2 == 0 ? 1 : 0;
+                int extra = board[middle]%2 == 0 && board[-y + middle] % 2 == 0 ? 1 : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
