@@ -957,6 +957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveTxt: {fileID: 844701160}
+  cameraParent: {fileID: 882918352}
   petManager: {fileID: 477146061}
   baseManager: {fileID: 855951980}
   level: 1
@@ -1073,6 +1074,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[0].id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[1].id
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[2].id
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[3].id
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[4].id
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[5].id
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[6].id
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[0].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: 31733507d5216468cb67fbae183cb723, type: 3}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[1].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: ba30cbe2721374ef5b71b8fe819d1a46, type: 3}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[2].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: b9a1e351e9297458fbee0227558b59df, type: 3}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[3].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: 58867a567ecae43b78396b2b917557ce, type: 3}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[4].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: 8520ec4bd17d640079b6126a1124c9e9, type: 3}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[5].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: dfa5d6d201bdd40a2b76e39d30c8ccfe, type: 3}
+    - target: {fileID: 2797650277070858863, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
+      propertyPath: petModelDatas.Array.data[6].model
+      value: 
+      objectReference: {fileID: 6606228269694984071, guid: ac5edfcf285374d93ba4a9625602412c, type: 3}
     - target: {fileID: 4353380386977461578, guid: 2c5014efba3384162a44599b48d8d1af, type: 3}
       propertyPath: m_Name
       value: PetManager

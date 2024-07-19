@@ -12,9 +12,24 @@ public class BaseTrigger : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && baseComponent.isHide == false)
+        if (Input.touchCount > 0 && baseComponent.isHide == false)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Touch touch = Input.GetTouch(0);
+
+            // Kiểm tra nếu ngón tay vừa chạm xuống màn hình
+            if (touch.phase == TouchPhase.Began)
+            {
+                TriggerTouch();
+            }
+        }
+        if ((Input.GetMouseButtonDown(0)) && baseComponent.isHide == false)
+        {
+            TriggerTouch();
+        }
+    }
+    private void TriggerTouch()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (coll.Raycast(ray, out hit, 100))
@@ -22,6 +37,5 @@ public class BaseTrigger : MonoBehaviour
                 Debug.Log("Clicked on Cube");
                 baseComponent.OnBaseClicked();
             }
-        }
     }
 }
