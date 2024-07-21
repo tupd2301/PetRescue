@@ -13,6 +13,7 @@ public class GamePlay : MonoBehaviour
     public static GamePlay Instance;
     public PetManager petManager;
     public BaseManager baseManager;
+    public EnvirontmentManager envManager;
     public int level = 0;
 
     public List<LevelData> allLevelData = new List<LevelData>();
@@ -74,11 +75,48 @@ public class GamePlay : MonoBehaviour
         baseManager.Init(allLevelData[level].boardDesign);
         move = allLevelData[level].moveMax;
         UpdateMoveText();
+        envManager.Init();
     }
 
+    public BaseData GetBaseEnvironment(int posID = 0)
+    {
+        List<BaseData> list = new List<BaseData>();
+        list = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == true).ToList();
+        int maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
+        int maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
+        switch (posID)
+        {
+            case 1://top-right
+                maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
+                list = list.FindAll(x => x.coordinates.y == maxY).ToList();
+                maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
+                list = list.FindAll(x => x.coordinates.x == maxX).ToList();
+                break;
+            case -1://top-left
+                maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
+                list = list.FindAll(x => x.coordinates.y == maxY).ToList();
+                maxX = (int)list.OrderBy(x => x.coordinates.x).ToList()[0].coordinates.x;
+                list = list.FindAll(x => x.coordinates.x == maxX).ToList();
+                break;
+            case 2://bottom-right
+                maxY = (int)list.OrderBy(x => x.coordinates.y).ToList()[0].coordinates.y;
+                list = list.FindAll(x => x.coordinates.y == maxY).ToList();
+                maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
+                list = list.FindAll(x => x.coordinates.x == maxX).ToList();
+                break;
+            case -2://bottom-left
+                maxY = (int)list.OrderBy(x => x.coordinates.y).ToList()[0].coordinates.y;
+                list = list.FindAll(x => x.coordinates.y == maxY).ToList();
+                maxX = (int)list.OrderBy(x => x.coordinates.x).ToList()[0].coordinates.x;
+                list = list.FindAll(x => x.coordinates.x == maxX).ToList();
+                break;
+        }
+        return list.FirstOrDefault();
+    }
+ 
     public void UpdateMoveText()
     {
-        _moveTxt.text = "Move: "+ move.ToString();
+        _moveTxt.text = "Moves: "+ move.ToString();
     }
 
     public void Move()

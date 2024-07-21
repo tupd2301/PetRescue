@@ -14,6 +14,7 @@ public class BaseManager : MonoBehaviour
     private List<int> boardDesign = new List<int>();
 
     private List<BaseData> sandList = new List<BaseData>();
+    public List<Vector2> activeBoardList = new List<Vector2>();
 
     public void Reset()
     {
@@ -137,7 +138,7 @@ public class BaseManager : MonoBehaviour
 
     public void CreateBoard(List<int> board, List<int> activeBoard)
     {
-        List<Vector2> activeBoardList = GetActiveBoard(activeBoard);
+        activeBoardList = GetActiveBoard(activeBoard);
         List<Vector2> sandListVector2 = GetSandList(activeBoard);
         bases = new List<BaseData>();
         int middle = board.Count / 2;
