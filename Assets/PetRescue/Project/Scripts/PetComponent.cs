@@ -67,8 +67,15 @@ public class PetComponent : MonoBehaviour
         transform.DOMove(destination - direction*1, 0.4f * (data.First().Key -1))
                 .OnComplete(() => 
                 {
+                    PetData petDataExist = GamePlay.Instance.petManager.GetPetByCoordinates(data.First().Value.coordinates);
+                    if(petDataExist != null) petDataExist.petModelData.model.GetComponent<Animator>().Play("Bounce");
+                    transform.localEulerAngles = new Vector3(0, 180, 0);
                     transform.DOMove(origin, 1f)
-                    .OnComplete(() => petData.petModelData.model.GetComponent<Animator>().Play("Idle_A"));
+                    .OnComplete(() =>
+                    { 
+                        transform.localEulerAngles = new Vector3(0, 0, 0);
+                        petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");
+                    });
                     // transform.DOLocalMoveY(5, 0.4f).OnComplete(() => transform.DOLocalMoveY(1.2f, 0.6f));
                 });
     }

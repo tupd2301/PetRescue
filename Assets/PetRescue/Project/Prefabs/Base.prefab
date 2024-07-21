@@ -1104,6 +1104,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e82891d20c79ffe41bbce942df3570c7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d33a96ce256e1449cbac22e5e6e0297c, type: 2}
     - target: {fileID: 919132149155446097, guid: e82891d20c79ffe41bbce942df3570c7, type: 3}
       propertyPath: m_Name
       value: GrassTile2
@@ -1257,6 +1261,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 54381223cd884d948a1960593329ebd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d33a96ce256e1449cbac22e5e6e0297c, type: 2}
     - target: {fileID: 919132149155446097, guid: 54381223cd884d948a1960593329ebd1, type: 3}
       propertyPath: m_Name
       value: GrassTileBlank
@@ -1328,6 +1336,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d311c076a3f36bc46b483ba7957d2f83, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d33a96ce256e1449cbac22e5e6e0297c, type: 2}
     - target: {fileID: 919132149155446097, guid: d311c076a3f36bc46b483ba7957d2f83, type: 3}
       propertyPath: m_Name
       value: GrassTile3
@@ -1465,6 +1477,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f271e209f37a7e443b4b41c2a28ae887, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d33a96ce256e1449cbac22e5e6e0297c, type: 2}
     - target: {fileID: 919132149155446097, guid: f271e209f37a7e443b4b41c2a28ae887, type: 3}
       propertyPath: m_Name
       value: GrassTile1
