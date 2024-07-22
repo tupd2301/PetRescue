@@ -106,12 +106,12 @@ public class PetManager : MonoBehaviour
             {
                 i++;
                 Transform petTransform = item.petComponent.transform;
-                if(i%1 == 0) yield return new WaitForSeconds(0.1f);
+                if(i%1 == 0) yield return new WaitForSeconds(0.1f/sortedList.Count);
                 petTransform.localScale = Vector3.zero;
                 petTransform.DOLocalMoveY(0,0);
                 item.petComponent.gameObject.SetActive(true);
-                petTransform.DOScale(Vector3.one, 0.3f);
-                petTransform.DOLocalMoveY(3f, 0.3f).SetEase(Ease.InBounce)
+                petTransform.DOScale(Vector3.one, 1f/sortedList.Count);
+                petTransform.DOLocalMoveY(3f, 1f/sortedList.Count).SetEase(Ease.InBounce)
                         .OnComplete(()=>petTransform.DOLocalMoveY(1.2f, 0.3f).SetEase(Ease.OutBounce));
             }
         }
