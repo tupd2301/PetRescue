@@ -231,6 +231,7 @@ public class GamePlay : MonoBehaviour
             if (petManager.GetPetCount() == 0)
             {
                 Debug.Log("Win");
+                SoundManager.Instance.PlaySound("win");
                 StartCoroutine(baseManager.SinkAll());
                 Invoke(nameof(NextLevel), 3f);
             }
@@ -240,6 +241,7 @@ public class GamePlay : MonoBehaviour
             if (petManager.GetPetCount() > 0)
             {
                 Debug.Log("Lose");
+                SoundManager.Instance.PlaySound("lose");
                 StartCoroutine(baseManager.SinkAll());
                 Invoke(nameof(Restart), 3f);
             }

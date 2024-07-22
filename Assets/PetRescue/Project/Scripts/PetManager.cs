@@ -106,14 +106,32 @@ public class PetManager : MonoBehaviour
             {
                 i++;
                 Transform petTransform = item.petComponent.transform;
-                if(i%1 == 0) yield return new WaitForSeconds(0.1f/sortedList.Count);
-                petTransform.localScale = Vector3.zero;
-                petTransform.DOLocalMoveY(0,0);
+                if (i % 1 == 0) yield return new WaitForSeconds(0.3f / sortedList.Count);
+                petTransform.DOLocalMoveY(15, 0);
+                petTransform.localScale = Vector3.one * 0f;
                 item.petComponent.gameObject.SetActive(true);
-                petTransform.DOScale(Vector3.one, 1f/sortedList.Count);
-                petTransform.DOLocalMoveY(3f, 1f/sortedList.Count).SetEase(Ease.InBounce)
-                        .OnComplete(()=>petTransform.DOLocalMoveY(1.2f, 0.3f).SetEase(Ease.OutBounce));
-            }
+                petTransform.DOScale(Vector3.one, 0.8f).OnStart(() => petTransform.localScale = Vector3.one * 0.9f)
+                    .OnComplete(()=>
+                    {
+                        
+                    });
+                petTransform.DOLocalMoveY(1.2f, 1f).SetEase(Ease.OutBounce);
+                // .OnComplete(() =>
+                // {
+                //     petTransform.DOScale(new Vector3(1.5f, 1f, 1.5f), 0.03f)
+                //         .OnComplete(() =>
+                //         {
+                //             petTransform.DOScale(Vector3.one*0.7f, 0.05f);
+                //             petTransform.DOLocalMoveY(2.5f, 0.1f)
+                //                 .OnComplete(() =>
+                //                 {
+                //                     petTransform.DOScale(Vector3.one, 0.1f);
+                //                     petTransform.DOLocalMoveY(1.2f, 0.1f);
+                //                 });
+                //         });
+                // });
+            };
+
         }
     }
     public bool CheckPetExist(Vector2 coordinates)

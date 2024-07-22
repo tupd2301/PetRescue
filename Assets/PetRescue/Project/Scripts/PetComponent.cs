@@ -30,6 +30,7 @@ public class PetComponent : MonoBehaviour
             transform.DOLocalMoveY(3f, 0.5f).OnComplete(() =>
             {
                 baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
+                SoundManager.Instance.PlaySound("splash");
                 transform.DOLocalMoveY(-2f, 0.5f).OnComplete(() =>
                 {
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);
@@ -64,15 +65,16 @@ public class PetComponent : MonoBehaviour
         Vector3 destination = new Vector3(baseComponent.spawnPoint.transform.position.x, 1, baseComponent.spawnPoint.transform.position.z);
         petData.baseCoordinates = originCoordinates;
         Vector3 direction = (destination - transform.position).normalized;
-        transform.DOMove(destination - direction*1, 0.4f * (data.First().Key -1))
-                .OnComplete(() => 
+        transform.DOMove(destination - direction * 1, 0.4f * (data.First().Key - 1))
+                .OnComplete(() =>
                 {
+                    SoundManager.Instance.PlaySound("collide");
                     PetData petDataExist = GamePlay.Instance.petManager.GetPetByCoordinates(data.First().Value.coordinates);
-                    if(petDataExist != null) petDataExist.petModelData.model.GetComponent<Animator>().Play("Bounce");
+                    if (petDataExist != null) petDataExist.petModelData.model.GetComponent<Animator>().Play("Bounce");
                     transform.localEulerAngles = new Vector3(0, 180, 0);
                     transform.DOMove(origin, 1f)
                     .OnComplete(() =>
-                    { 
+                    {
                         transform.localEulerAngles = new Vector3(0, 0, 0);
                         petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");
                     });
@@ -82,8 +84,8 @@ public class PetComponent : MonoBehaviour
 
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
-        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) && !data.First().Value.obj.GetComponent<BaseComponent>().isHide 
-                ||  data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown 
+        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) && !data.First().Value.obj.GetComponent<BaseComponent>().isHide
+                || data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
                 || data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
                 || data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
         {
@@ -96,21 +98,31 @@ public class PetComponent : MonoBehaviour
         bool isStop = data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.Stop;
         Vector3 destination = new Vector3(baseComponent.spawnPoint.transform.position.x, 1, baseComponent.spawnPoint.transform.position.z);
         bool isJump = isStop;
-        transform.DOMove(destination, 0.4f * (data.First().Key))
-                .OnUpdate(() =>
-                {
-                    if (Vector3.Distance(transform.position, destination) < 4f && !isJump)
+        System.Random random = new System.Random();
+        if (random.Next(0, 100) < 100)
+            SoundManager.Instance.PlaySound("preRoll");
+        transform.DOLocalMoveY(5, 0.3f).OnComplete(() =>
+        {
+            transform.DOLocalMoveY(1.2f, 0.3f).OnComplete(() =>
+            {
+                transform.DOMove(destination, 0.4f * (data.First().Key))
+                    .OnUpdate(() =>
                     {
-                        Next(data.First().Value, originCoordinates);
-                        isJump = true;
-                    }
-                })
-                .OnComplete(() =>
-                {
-                    if (isStop)
+                        if (Vector3.Distance(transform.position, destination) < 4f && !isJump)
+                        {
+                            Next(data.First().Value, originCoordinates);
+                            isJump = true;
+                        }
+                    })
+                    .OnComplete(() =>
                     {
-                        petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");
-                    }
-                });
+                        if (isStop)
+                        {
+                            petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");
+                        }
+                    });
+            });
+        }
+        );
     }
 }

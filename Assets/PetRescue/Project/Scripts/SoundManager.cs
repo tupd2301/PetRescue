@@ -45,7 +45,8 @@ public class SoundManager : MonoBehaviour
                 int index = Random.Range(0, sound.clips.Count);
                 AudioSource audioSource = audioSources.FirstOrDefault(x => x.type == sound.audioSourceType).audioSource;
                 audioSource.clip = sound.clips[index];
-                audioSource.PlayOneShot(audioSource.clip, sound.volume);
+                audioSource.pitch = sound.speedScale;
+                audioSource.PlayOneShot(audioSource.clip, sound.volumeScale);
             }
         }
     }
@@ -55,7 +56,8 @@ public class SoundData
 {
     public string name;
     public AudioSourceType audioSourceType;
-    public float volume = 1;
+    public float volumeScale = 1;
+    public float speedScale = 1;
     public List<AudioClip> clips = new List<AudioClip>();
 }
 [System.Serializable]
