@@ -18,6 +18,8 @@ public class GamePlay : MonoBehaviour
 
     public List<LevelData> allLevelData = new List<LevelData>();
 
+    List<string> levelConfigs = new List<string>();
+
     public string config;
 
     public int move = 0;
@@ -38,7 +40,7 @@ public class GamePlay : MonoBehaviour
             currentLevelData = levelData.FirstOrDefault();
             baseManager.Init(levelData.FirstOrDefault().boardDesign);
             move = levelData.FirstOrDefault().moveMax;
-            UpdateMoveText();
+            Invoke(nameof(UpdateMoveText),0.1f);
         }
     }
 
@@ -54,7 +56,7 @@ public class GamePlay : MonoBehaviour
 
     List<LevelData> ReadConfig(string config, bool isOverride = true)
     {
-        List<string> levelConfigs = new List<string>();
+        levelConfigs = new List<string>();
         List<LevelData> levelDatas = new List<LevelData>();
         string[] levelStrings = config.Split("{");
         for (int i = 0; i < levelStrings.Length; i++)
@@ -102,8 +104,10 @@ public class GamePlay : MonoBehaviour
         baseManager.Init(allLevelData[level].boardDesign);
         move = allLevelData[level].moveMax;
         UpdateMoveText();
+        testInput = $"{{{levelConfigs[level + 1]}}}";
         envManager.Init();
     }
+
 
     public BaseData GetBaseEnvironment(int posID = 0)
     {
@@ -181,6 +185,7 @@ public class GamePlay : MonoBehaviour
             baseManager.Init(allLevelData[level].boardDesign);
             currentLevelData = allLevelData[level];
             move = allLevelData[level].moveMax;
+            testInput = $"{{{levelConfigs[level + 1]}}}";
             UpdateMoveText();
         }
         if (Input.GetKeyDown(KeyCode.B))
@@ -191,6 +196,7 @@ public class GamePlay : MonoBehaviour
             baseManager.Init(allLevelData[level].boardDesign);
             currentLevelData = allLevelData[level];
             move = allLevelData[level].moveMax;
+            testInput = $"{{{levelConfigs[level + 1]}}}";
             UpdateMoveText();
         }
     }
@@ -204,6 +210,7 @@ public class GamePlay : MonoBehaviour
         Reset();
         currentLevelData = allLevelData[level];
         baseManager.Init(allLevelData[level].boardDesign);
+        testInput = $"{{{levelConfigs[level + 1]}}}";
         move = allLevelData[level].moveMax;
     }
 
@@ -213,6 +220,7 @@ public class GamePlay : MonoBehaviour
         baseManager.Init(allLevelData[level].boardDesign);
         currentLevelData = allLevelData[level];
         move = allLevelData[level].moveMax;
+        testInput = $"{{{levelConfigs[level + 1]}}}";
         UpdateMoveText();
     }
 
