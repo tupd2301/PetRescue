@@ -184,24 +184,24 @@ public class BaseManager : MonoBehaviour
         StartCoroutine(CallAnimationSpawn());
     }
 
-    public List<Vector3Int> SpawnPets(List<int> board, List<LineConfig> lineConfigs)
+    public List<Vector3Int> SpawnPets(LevelData levelData)
     {
         List<Vector3Int> petVector = new List<Vector3Int>();
-        int middle = board.Count / 2;
-        int add = board.Count % 2 == 1 ? 1 : 0;
+        int middle = levelData.boardDesign.Count / 2;
+        int add = levelData.boardDesign.Count % 2 == 1 ? 1 : 0;
         for (int y = middle; y > -middle - add; y--)
         {
-            int middleBase = Mathf.FloorToInt(board[-y + middle] / 2f);
-            int extraCount = board[-y + middle] % 2 == 0 ? 0 : 1;
+            int middleBase = Mathf.FloorToInt(levelData.boardDesign[-y + middle] / 2f);
+            int extraCount = levelData.boardDesign[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                int extra = board[middle]%2 == 0 && board[-y + middle] % 2 == 0 ? 1 : 0;
+                int extra = levelData.boardDesign[middle]%2 == 0 && levelData.boardDesign[-y + middle] % 2 == 0 ? 1 : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
                 if (y > 1) newX = x - y / 2;
                 if (y == 1) newX = x;
-                petVector.Add(new Vector3Int(lineConfigs[Mathf.Abs(-y + middle)].petDirections[x + middleBase], newX + extra, y));
+                petVector.Add(new Vector3Int(levelData.lineConfigs[Mathf.Abs(-y + middle)].petDirections[x + middleBase], newX + extra, y));
             }
         }
 

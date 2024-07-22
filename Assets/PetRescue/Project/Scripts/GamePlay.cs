@@ -22,6 +22,26 @@ public class GamePlay : MonoBehaviour
 
     public int move = 0;
 
+    public LevelData currentLevelData;
+
+
+
+    //-------
+    [Header("Test (T)")]
+    [SerializeField] private string testInput;
+    
+    public void Test()
+    {
+        if (testInput != "")
+        {
+            List<LevelData> levelData = ReadConfig(testInput, false);
+            currentLevelData = levelData.FirstOrDefault();
+            baseManager.Init(levelData.FirstOrDefault().boardDesign);
+            move = levelData.FirstOrDefault().moveMax;
+            UpdateMoveText();
+        }
+    }
+
 
 
     void Awake()
@@ -32,9 +52,10 @@ public class GamePlay : MonoBehaviour
         ReadConfig(config);
     }
 
-    void ReadConfig(string config)
+    List<LevelData> ReadConfig(string config, bool isOverride = true)
     {
         List<string> levelConfigs = new List<string>();
+        List<LevelData> levelDatas = new List<LevelData>();
         string[] levelStrings = config.Split("{");
         for (int i = 0; i < levelStrings.Length; i++)
         {
@@ -67,11 +88,17 @@ public class GamePlay : MonoBehaviour
             }
             levelData.lineConfigs = lineConfigs;
             levelData.moveMax = Int32.Parse(lineStrings[lineStrings.Count() - 1]);
-            allLevelData.Add(levelData);
+            levelDatas.Add(levelData);
         }
+        if (isOverride)
+        {
+            allLevelData = levelDatas;
+        }
+        return levelDatas;
     }
     void Start()
     {
+        currentLevelData = allLevelData[level];
         baseManager.Init(allLevelData[level].boardDesign);
         move = allLevelData[level].moveMax;
         UpdateMoveText();
@@ -113,10 +140,10 @@ public class GamePlay : MonoBehaviour
         }
         return list.FirstOrDefault();
     }
- 
+
     public void UpdateMoveText()
     {
-        _moveTxt.text = "Moves: "+ move.ToString();
+        _moveTxt.text = "Moves: " + move.ToString();
     }
 
     public void Move()
@@ -130,7 +157,7 @@ public class GamePlay : MonoBehaviour
     }
     public void SpawnPets()
     {
-        List<Vector3Int> petVector3 = baseManager.SpawnPets(allLevelData[level].boardDesign, allLevelData[level].lineConfigs);
+        List<Vector3Int> petVector3 = baseManager.SpawnPets(currentLevelData);
         petManager.SpawnPets(petVector3);
     }
 
@@ -140,12 +167,19 @@ public class GamePlay : MonoBehaviour
         {
             Reset();
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StopAllCoroutines();
+            Reset();
+            Invoke(nameof(Test),0.2f);
+        }
         if (Input.GetKeyDown(KeyCode.N))
         {
             StopAllCoroutines();
             level++;
             Reset();
             baseManager.Init(allLevelData[level].boardDesign);
+            currentLevelData = allLevelData[level];
             move = allLevelData[level].moveMax;
             UpdateMoveText();
         }
@@ -155,6 +189,7 @@ public class GamePlay : MonoBehaviour
             level--;
             Reset();
             baseManager.Init(allLevelData[level].boardDesign);
+            currentLevelData = allLevelData[level];
             move = allLevelData[level].moveMax;
             UpdateMoveText();
         }
@@ -163,9 +198,11 @@ public class GamePlay : MonoBehaviour
     public void NextLevel()
     {
         CancelInvoke(nameof(NextLevel));
+        StopAllCoroutines();
         if (level >= allLevelData.Count - 1) return;
         level++;
         Reset();
+        currentLevelData = allLevelData[level];
         baseManager.Init(allLevelData[level].boardDesign);
         move = allLevelData[level].moveMax;
     }
@@ -174,6 +211,7 @@ public class GamePlay : MonoBehaviour
     {
         Reset();
         baseManager.Init(allLevelData[level].boardDesign);
+        currentLevelData = allLevelData[level];
         move = allLevelData[level].moveMax;
         UpdateMoveText();
     }
