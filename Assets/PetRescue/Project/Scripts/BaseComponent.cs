@@ -39,6 +39,7 @@ public class BaseComponent : MonoBehaviour
         baseModelDatas.ForEach(x => x.obj.SetActive(false));
         grassModels.ForEach(x => x.SetActive(false));
         baseModelDatas.FirstOrDefault(x => x.name == name).obj.SetActive(true);
+        Debug.Log(name);
         if (type == BaseType.SwapUpDown || type == BaseType.SwapLeftUp || type == BaseType.SwapLeftDown)
         {
             _swapUI.SetActive(true);
@@ -91,7 +92,8 @@ public enum BaseType
     Stop,
     SwapUpDown,
     SwapLeftUp,
-    SwapLeftDown
+    SwapLeftDown,
+    Lock
 }
 
 [System.Serializable]

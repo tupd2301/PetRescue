@@ -181,52 +181,71 @@ public class BaseManager : MonoBehaviour
                 }
             }
         }
-        SpawnSpecialBases();
         StartCoroutine(CallAnimationSpawn());
     }
 
     private void SpawnSpecialBases()
     {
-        List<Vector3Int> petVectors = SpawnPets(GamePlay.Instance.currentLevelData);
+        List<ValueData> petVectors = SpawnByValues(GamePlay.Instance.currentLevelData);
         foreach (var item in petVectors)
         {
-            GameObject gameObj = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(item.y, item.z)).obj;
-            switch (item.x)
+            GameObject gameObj = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == item.coordinates).obj;
+            List<int> list = GamePlay.Instance.GetValues(item.trueCoordinates);
+            if (list.Count > 1)
             {
-                case -1:
-                    gameObj.SetActive(false);
-                    gameObj.GetComponent<BaseComponent>().isHide = true;
-                    break;
-                case 0:
-                    break;
-                case 7:
-                    gameObj.GetComponent<BaseComponent>().type = BaseType.SwapUpDown;
-                    gameObj.GetComponent<BaseComponent>().SetModel("swap7");
-                    break;
-                case 8:
-                    gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftDown;
-                    gameObj.GetComponent<BaseComponent>().SetModel("swap8");
-                    break;
-                case 9:
-                    gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftUp;
-                    gameObj.GetComponent<BaseComponent>().SetModel("swap9");
-                    break;
-                case 10:
-                    gameObj.GetComponent<BaseComponent>().type = BaseType.Stop;
-                    gameObj.GetComponent<BaseComponent>().SetModel("stop");
-                    break;
-                case 11:
-                    gameObj.GetComponent<BaseComponent>().type = BaseType.Stop;
-                    gameObj.GetComponent<BaseComponent>().SetModel("lock");
-                    break;
-                default: break;
+                switch (list[1])
+                {
+                    case 11:
+                        SpawnBase(gameObj, list[1], item);
+                        break;
+                    default: break;
+                }
             }
+            else if(list.Count == 1) SpawnBase(gameObj, list[0], item);
+        }
+    }
+    private void SpawnBase(GameObject obj, int id, ValueData valueData)
+    {
+        GameObject gameObj = obj;
+        switch (id)
+        {
+            case -1:
+                gameObj.SetActive(false);
+                gameObj.GetComponent<BaseComponent>().isHide = true;
+                break;
+            case 0:
+                break;
+            case 7:
+                gameObj.GetComponent<BaseComponent>().type = BaseType.SwapUpDown;
+                gameObj.GetComponent<BaseComponent>().SetModel("swap7");
+                break;
+            case 8:
+                gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftDown;
+                gameObj.GetComponent<BaseComponent>().SetModel("swap8");
+                break;
+            case 9:
+                gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftUp;
+                gameObj.GetComponent<BaseComponent>().SetModel("swap9");
+                break;
+            case 10:
+                gameObj.GetComponent<BaseComponent>().type = BaseType.Stop;
+                gameObj.GetComponent<BaseComponent>().SetModel("stop");
+                break;
+            case 11:
+                gameObj.GetComponent<BaseComponent>().type = BaseType.Lock;
+                gameObj.GetComponent<BaseComponent>().SetModel("lock");
+                LockTile lockTile = gameObj.AddComponent<LockTile>();
+                lockTile.count = GamePlay.Instance.GetValues(valueData.trueCoordinates)[2];
+                Debug.Log("Lock");
+
+                break;
+            default: break;
         }
     }
 
-    public List<Vector3Int> SpawnPets(LevelData levelData)
+    public List<ValueData> SpawnByValues(LevelData levelData)
     {
-        List<Vector3Int> petVector = new List<Vector3Int>();
+        List<ValueData> petValues = new List<ValueData>();
         int middle = levelData.boardDesign.Count / 2;
         int add = levelData.boardDesign.Count % 2 == 1 ? 1 : 0;
         for (int y = middle; y > -middle - add; y--)
@@ -241,11 +260,15 @@ public class BaseManager : MonoBehaviour
                 if (y < -1) newX = x - (y - 1) / 2;
                 if (y > 1) newX = x - y / 2;
                 if (y == 1) newX = x;
-                petVector.Add(new Vector3Int(levelData.lineConfigs[Mathf.Abs(-y + middle)].petDirections[x + middleBase], newX + extra, y));
+                ValueData valueData = new ValueData();
+                valueData.coordinates = new Vector2Int(newX + extra, y);
+                valueData.id = levelData.lineConfigs[Mathf.Abs(-y + middle)].values[x + middleBase][0];
+                valueData.trueCoordinates = new Vector2Int(x + middleBase, Mathf.Abs(-y + middle));
+                petValues.Add(valueData);
             }
         }
 
-        return petVector;
+        return petValues;
     }
 
     IEnumerator CallAnimationSpawn()
@@ -272,6 +295,7 @@ public class BaseManager : MonoBehaviour
                 currentX = (int)item.coordinates.x;
             }
         }
+        SpawnSpecialBases();
         yield return new WaitForSeconds(0.5f);
         GamePlay.Instance.SpawnPets();
     }
@@ -384,4 +408,11 @@ public class BaseData
     public Vector2 coordinates;
 
     public GameObject obj;
+}
+[System.Serializable]
+public class ValueData
+{
+    public int id;
+    public Vector2Int trueCoordinates;
+    public Vector2Int coordinates;
 }

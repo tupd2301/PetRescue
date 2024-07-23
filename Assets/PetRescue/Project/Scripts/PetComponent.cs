@@ -31,7 +31,7 @@ public class PetComponent : MonoBehaviour
                             Debug.Log("Next");
                 // baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
                 SoundManager.Instance.PlaySound("splash");
-                // GamePlay.Instance.OnPetJump?.Invoke();
+                GamePlay.Instance.OnPetJump?.Invoke();
                 transform.DOLocalMoveY(-2f, 0.5f).OnComplete(() =>
                 {
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);

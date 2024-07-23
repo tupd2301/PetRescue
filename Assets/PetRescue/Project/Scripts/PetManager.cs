@@ -24,15 +24,15 @@ public class PetManager : MonoBehaviour
     {
         return pets.FindAll(x => x.petComponent.isHide == false).Count;
     }
-    public void SpawnPets(List<Vector3Int> list)
+    public void SpawnPets(List<ValueData> list)
     {
         Reset();
         for (int i = 0; i < list.Count; i++)
         {
-            switch (list[i].x)
+            switch (list[i].id)
             {
                 case int k when k > 0 && k <= 6:
-                    SpawnPet(i, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)), (HexDirection)list[i].x);
+                    SpawnPet(i, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == list[i].coordinates), (HexDirection)list[i].id);
                     break;
                 default:
                     break;

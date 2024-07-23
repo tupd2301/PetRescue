@@ -34,14 +34,14 @@ public class GamePlay : MonoBehaviour
     //-------
     [Header("Test (T)")]
     [SerializeField] private string testInput;
-    
+
     public void Test()
     {
         if (testInput != "")
         {
             List<LevelData> levelData = ReadConfig(testInput, false);
             Init(levelData[0]);
-            Invoke(nameof(UpdateMoveText),0.1f);
+            Invoke(nameof(UpdateMoveText), 0.1f);
         }
     }
 
@@ -73,19 +73,36 @@ public class GamePlay : MonoBehaviour
             levelData.config = levelConfigs[i];
             List<LineConfig> lineConfigs = new List<LineConfig>();
 
+            //read size and directions
             string[] lineStrings = levelConfigs[i].Split(",");
             for (int j = 0; j < lineStrings.Length - 1; j++)
             {
                 int num = Int32.Parse(lineStrings[j]);
                 LineConfig lineConfig = new LineConfig();
                 lineConfig.size = num;
-                List<int> list = new List<int>();
+                List<List<int>> listDirections = new List<List<int>>();
                 for (int k = 1; k <= num; k++)
                 {
+                    List<int> ints = new List<int>();
                     if (lineStrings.Count() <= j + k) break;
-                    list.Add(Int32.Parse(lineStrings[j + k]));
+                    if (lineStrings[j + k].Contains('['))
+                    {
+                        string[] valueString = lineStrings[j + k].Split("[")[1].Split("]");
+                        ints.Add(Int32.Parse(valueString[1]));
+                        string[] strings = valueString[0].Split("|");
+                        for (int l = 0; l < strings.Length; l++)
+                        {
+                            ints.Add(Int32.Parse(strings[l]));
+                        }
+                    }
+                    else
+                    {
+                        // Debug.Log(lineStrings[j + k]);
+                        ints.Add(Int32.Parse(lineStrings[j + k]));
+                    }
+                    listDirections.Add(ints);
                 }
-                lineConfig.petDirections = list;
+                lineConfig.values = listDirections;
                 lineConfigs.Add(lineConfig);
                 j += num;
             }
@@ -108,6 +125,7 @@ public class GamePlay : MonoBehaviour
         // testInput = $"{{{levelConfigs[level + 1]}}}";
         Init(allLevelData[level]);
         envManager.Init();
+        OnPetJump += UnlockAll;
     }
 
     void Init(LevelData levelData)
@@ -173,7 +191,7 @@ public class GamePlay : MonoBehaviour
     }
     public void SpawnPets()
     {
-        List<Vector3Int> petVector3 = baseManager.SpawnPets(currentLevelData);
+        List<ValueData> petVector3 = baseManager.SpawnByValues(currentLevelData);
         petManager.SpawnPets(petVector3);
     }
 
@@ -187,7 +205,7 @@ public class GamePlay : MonoBehaviour
         {
             StopAllCoroutines();
             Reset();
-            Invoke(nameof(Test),0.2f);
+            Invoke(nameof(Test), 0.2f);
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
@@ -223,7 +241,7 @@ public class GamePlay : MonoBehaviour
 
     public void CheckWin()
     {
-        if (move >= 0)
+        if (move > 0)
         {
             if (petManager.GetPetCount() == 0)
             {
@@ -243,6 +261,29 @@ public class GamePlay : MonoBehaviour
                 Invoke(nameof(Restart), 3f);
             }
         }
+    }
+
+    public void UnlockAll()
+    {
+        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == true && x.obj.GetComponent<LockTile>()).ToList();
+        foreach (var item in collection)
+        {
+            if (item.obj.GetComponent<LockTile>().isUnlocked == false)
+            {
+                item.obj.GetComponent<LockTile>().Unlock();
+            }
+            if(item.obj.GetComponent<LockTile>().isUnlocked)
+            {
+                item.obj.GetComponent<BaseComponent>().SetModel("normal");
+            }
+        }
+    }
+
+    public List<int> GetValues(Vector2Int coordinates)
+    {
+        List<List<List<int>>> ints = currentLevelData.boardDesignValues;
+        // Debug.Log(coordinates.x + " " + coordinates.y);
+        return ints[coordinates.y][coordinates.x];
     }
 
     void Reset()
@@ -271,10 +312,22 @@ public class LevelData
             return list;
         }
     }
+    public List<List<List<int>>> boardDesignValues
+    {
+        get
+        {
+            List<List<List<int>>> list = new List<List<List<int>>>();
+            for (int i = 0; i < lineConfigs.Count; i++)
+            {
+                list.Add(lineConfigs[i].values);
+            }
+            return list;
+        }
+    }
 }
 [System.Serializable]
 public class LineConfig
 {
     public int size;
-    public List<int> petDirections;
+    public List<List<int>> values;
 }
