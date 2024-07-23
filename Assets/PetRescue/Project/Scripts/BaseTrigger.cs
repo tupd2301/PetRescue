@@ -6,6 +6,7 @@ public class BaseTrigger : MonoBehaviour
 {
     public BaseComponent baseComponent;
     private Collider coll;
+    private int currentFingerId;
     void Start()
     {
         coll = GetComponent<Collider>();
@@ -15,11 +16,11 @@ public class BaseTrigger : MonoBehaviour
         if (Input.touchCount > 0 && baseComponent.isHide == false)
         {
             Touch touch = Input.GetTouch(0);
-
-            // Kiểm tra nếu ngón tay vừa chạm xuống màn hình
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && currentFingerId != touch.fingerId)
             {
+                currentFingerId = touch.fingerId;
                 TriggerTouch();
+                return;
             }
         }
         if ((Input.GetMouseButtonDown(0)) && baseComponent.isHide == false)
