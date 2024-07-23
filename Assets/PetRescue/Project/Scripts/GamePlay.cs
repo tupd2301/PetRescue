@@ -27,6 +27,8 @@ public class GamePlay : MonoBehaviour
 
     public LevelData currentLevelData;
 
+    public System.Action OnPetJump;
+
 
 
     //-------
@@ -221,7 +223,7 @@ public class GamePlay : MonoBehaviour
 
     public void CheckWin()
     {
-        if (move > 0)
+        if (move >= 0)
         {
             if (petManager.GetPetCount() == 0)
             {

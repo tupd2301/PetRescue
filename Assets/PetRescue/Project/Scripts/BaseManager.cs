@@ -65,7 +65,7 @@ public class BaseManager : MonoBehaviour
         List<Vector2> activeBoard = new List<Vector2>();
         int middle = board.Count / 2;
         int add = board.Count % 2 == 1 ? 1 : 0;
-        if(board[middle] % 2 == 0)
+        if (board[middle] % 2 == 0)
         {
             Vector3 pos = GamePlay.Instance.cameraParent.transform.position;
             GamePlay.Instance.cameraParent.transform.position = new Vector3(1, pos.y, pos.z);
@@ -81,7 +81,7 @@ public class BaseManager : MonoBehaviour
             int extraCount = board[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                float extra = board[middle]%2 == 0 && board[-y + middle] % 2 == 0 ? 1f : 0;
+                float extra = board[middle] % 2 == 0 && board[-y + middle] % 2 == 0 ? 1f : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
@@ -103,7 +103,7 @@ public class BaseManager : MonoBehaviour
             int index = random.Next(0, sortedList.Count);
             if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
             sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f).SetEase(Ease.Linear);
-            sortedList[index].obj.GetComponent<BaseComponent>().CallSplashVFX();
+            // sortedList[index].obj.GetComponent<BaseComponent>().CallSplashVFX();
             sortedList.Remove(sortedList[index]);
             yield return new WaitForSeconds(random.Next(0, 5) * 0.05f);
         }
@@ -167,12 +167,12 @@ public class BaseManager : MonoBehaviour
                 bases.Add(newBase);
                 baseObj.GetComponent<BaseComponent>().baseData = newBase;
                 baseObj.GetComponent<BaseComponent>().isHide = !activeBoardList.Contains(new Vector2(newX, y));
-                if(baseObj.GetComponent<BaseComponent>().isHide)
+                if (baseObj.GetComponent<BaseComponent>().isHide)
                     baseObj.GetComponent<BaseComponent>().type = BaseType.Hide;
                 else
                 {
                     baseObj.GetComponent<BaseComponent>().type = BaseType.Normal;
-                   
+
                 }
                 if (sandListVector2.Contains(new Vector2(newX, y)))
                 {
@@ -181,7 +181,47 @@ public class BaseManager : MonoBehaviour
                 }
             }
         }
+        SpawnSpecialBases();
         StartCoroutine(CallAnimationSpawn());
+    }
+
+    private void SpawnSpecialBases()
+    {
+        List<Vector3Int> petVectors = SpawnPets(GamePlay.Instance.currentLevelData);
+        foreach (var item in petVectors)
+        {
+            GameObject gameObj = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(item.y, item.z)).obj;
+            switch (item.x)
+            {
+                case -1:
+                    gameObj.SetActive(false);
+                    gameObj.GetComponent<BaseComponent>().isHide = true;
+                    break;
+                case 0:
+                    break;
+                case 7:
+                    gameObj.GetComponent<BaseComponent>().type = BaseType.SwapUpDown;
+                    gameObj.GetComponent<BaseComponent>().SetModel("swap7");
+                    break;
+                case 8:
+                    gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftDown;
+                    gameObj.GetComponent<BaseComponent>().SetModel("swap8");
+                    break;
+                case 9:
+                    gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftUp;
+                    gameObj.GetComponent<BaseComponent>().SetModel("swap9");
+                    break;
+                case 10:
+                    gameObj.GetComponent<BaseComponent>().type = BaseType.Stop;
+                    gameObj.GetComponent<BaseComponent>().SetModel("stop");
+                    break;
+                case 11:
+                    gameObj.GetComponent<BaseComponent>().type = BaseType.Stop;
+                    gameObj.GetComponent<BaseComponent>().SetModel("lock");
+                    break;
+                default: break;
+            }
+        }
     }
 
     public List<Vector3Int> SpawnPets(LevelData levelData)
@@ -195,7 +235,7 @@ public class BaseManager : MonoBehaviour
             int extraCount = levelData.boardDesign[-y + middle] % 2 == 0 ? 0 : 1;
             for (int x = -middleBase; x < middleBase + extraCount; x++)
             {
-                int extra = levelData.boardDesign[middle]%2 == 0 && levelData.boardDesign[-y + middle] % 2 == 0 ? 1 : 0;
+                int extra = levelData.boardDesign[middle] % 2 == 0 && levelData.boardDesign[-y + middle] % 2 == 0 ? 1 : 0;
                 int newX = x;
                 if (y == -1) newX = x - y;
                 if (y < -1) newX = x - (y - 1) / 2;
@@ -276,7 +316,7 @@ public class BaseManager : MonoBehaviour
         BaseData baseData = bases.FirstOrDefault(x => x.coordinates == des && x.obj.GetComponent<BaseComponent>().isHide == false);
         if (baseData != null)
         {
-            if( GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates)
+            if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates)
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.Stop
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
@@ -316,19 +356,19 @@ public class BaseManager : MonoBehaviour
         }
         PetData pet1 = GamePlay.Instance.petManager.GetPetByCoordinates(portal1Coordinates);
         PetData pet2 = GamePlay.Instance.petManager.GetPetByCoordinates(portal2Coordinates);
-        if(pet1 != null)
+        if (pet1 != null)
         {
             pet1.baseCoordinates = portal2Coordinates;
             Vector3 pos = bases.FirstOrDefault(x => x.coordinates == pet1.baseCoordinates).obj.transform.position;
             pet1.petComponent.transform.position = new Vector3(pos.x, 1.2f, pos.z);
         }
-        if(pet2 != null)
+        if (pet2 != null)
         {
             pet2.baseCoordinates = portal1Coordinates;
             Vector3 pos = bases.FirstOrDefault(x => x.coordinates == pet2.baseCoordinates).obj.transform.position;
             pet2.petComponent.transform.position = new Vector3(pos.x, 1.2f, pos.z);
         }
-        return pet1!=null && pet2!=null;
+        return pet1 != null && pet2 != null;
     }
 
 

@@ -26,11 +26,12 @@ public class PetComponent : MonoBehaviour
     {
         if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates))
         {
-
             transform.DOLocalMoveY(3f, 0.5f).OnComplete(() =>
             {
-                baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
+                            Debug.Log("Next");
+                // baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
                 SoundManager.Instance.PlaySound("splash");
+                // GamePlay.Instance.OnPetJump?.Invoke();
                 transform.DOLocalMoveY(-2f, 0.5f).OnComplete(() =>
                 {
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);

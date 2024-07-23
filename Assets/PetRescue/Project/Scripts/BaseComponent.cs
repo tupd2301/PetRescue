@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class BaseComponent : MonoBehaviour
 
     public BaseType type;
 
-    [SerializeField] private List<GameObject> baseModels = new List<GameObject>();
+    [SerializeField] private List<BaseModelData> baseModelDatas = new List<BaseModelData>();
     [SerializeField] private List<GameObject> grassModels = new List<GameObject>();
 
     public void SetType(BaseType type)
@@ -27,17 +28,17 @@ public class BaseComponent : MonoBehaviour
 
     public void RandomGrassModel()
     {
-        baseModels.ForEach(x => x.SetActive(false));
+        baseModelDatas.ForEach(x => x.obj.SetActive(false));
         grassModels.ForEach(x => x.SetActive(false));
         System.Random random = new System.Random();
         int index = random.Next(0, grassModels.Count);
         grassModels[index].SetActive(true);
     }
-    public void SetModel(int id)
+    public void SetModel(string name)
     {
-        baseModels.ForEach(x => x.SetActive(false));
+        baseModelDatas.ForEach(x => x.obj.SetActive(false));
         grassModels.ForEach(x => x.SetActive(false));
-        baseModels[id].SetActive(true);
+        baseModelDatas.FirstOrDefault(x => x.name == name).obj.SetActive(true);
         if (type == BaseType.SwapUpDown || type == BaseType.SwapLeftUp || type == BaseType.SwapLeftDown)
         {
             _swapUI.SetActive(true);
@@ -45,12 +46,12 @@ public class BaseComponent : MonoBehaviour
     }
     public void CallSplashVFX()
     {
-        _splashVFX.SetActive(true);
+        _splashVFX?.SetActive(true);
     }
     public void SetModelSand()
     {
-        baseModels.ForEach(x => x.SetActive(false));
-        baseModels[0].SetActive(true);
+        baseModelDatas.ForEach(x => x.obj.SetActive(false));
+        baseModelDatas.FirstOrDefault(x => x.name == "sand").obj.SetActive(true);
     }
 
     public void OnBaseClicked()
@@ -91,4 +92,11 @@ public enum BaseType
     SwapUpDown,
     SwapLeftUp,
     SwapLeftDown
+}
+
+[System.Serializable]
+public class BaseModelData
+{
+    public string name;
+    public GameObject obj;
 }

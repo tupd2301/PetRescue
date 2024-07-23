@@ -31,35 +31,8 @@ public class PetManager : MonoBehaviour
         {
             switch (list[i].x)
             {
-                case -1:
-                    GameObject gameObj0 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
-                    gameObj0.SetActive(false);
-                    gameObj0.GetComponent<BaseComponent>().isHide = true;
-                    break;
-                case 0:
-                    break;
                 case int k when k > 0 && k <= 6:
                     SpawnPet(i, GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)), (HexDirection)list[i].x);
-                    break;
-                case 7:
-                    GameObject gameObj1 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
-                    gameObj1.GetComponent<BaseComponent>().type = BaseType.SwapUpDown;
-                    gameObj1.GetComponent<BaseComponent>().SetModel(2);
-                    break;
-                case 8:
-                    GameObject gameObj3 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
-                    gameObj3.GetComponent<BaseComponent>().type = BaseType.SwapLeftDown;
-                    gameObj3.GetComponent<BaseComponent>().SetModel(4);
-                    break;
-                case 9:
-                    GameObject gameObj4 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
-                    gameObj4.GetComponent<BaseComponent>().type = BaseType.SwapLeftUp;
-                    gameObj4.GetComponent<BaseComponent>().SetModel(3);
-                    break;
-                case 10:
-                    GameObject gameObj2 = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(list[i].y, list[i].z)).obj;
-                    gameObj2.GetComponent<BaseComponent>().type = BaseType.Stop;
-                    gameObj2.GetComponent<BaseComponent>().SetModel(1);
                     break;
                 default:
                     break;
@@ -110,26 +83,8 @@ public class PetManager : MonoBehaviour
                 petTransform.DOLocalMoveY(15, 0);
                 petTransform.localScale = Vector3.one * 0f;
                 item.petComponent.gameObject.SetActive(true);
-                petTransform.DOScale(Vector3.one, 0.8f).OnStart(() => petTransform.localScale = Vector3.one * 0.9f)
-                    .OnComplete(()=>
-                    {
-                        
-                    });
+                petTransform.DOScale(Vector3.one, 0.8f).OnStart(() => petTransform.localScale = Vector3.one * 0.9f);
                 petTransform.DOLocalMoveY(1.2f, 1f).SetEase(Ease.OutBounce);
-                // .OnComplete(() =>
-                // {
-                //     petTransform.DOScale(new Vector3(1.5f, 1f, 1.5f), 0.03f)
-                //         .OnComplete(() =>
-                //         {
-                //             petTransform.DOScale(Vector3.one*0.7f, 0.05f);
-                //             petTransform.DOLocalMoveY(2.5f, 0.1f)
-                //                 .OnComplete(() =>
-                //                 {
-                //                     petTransform.DOScale(Vector3.one, 0.1f);
-                //                     petTransform.DOLocalMoveY(1.2f, 0.1f);
-                //                 });
-                //         });
-                // });
             };
 
         }
