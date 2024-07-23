@@ -10,6 +10,7 @@ public class GamePlay : MonoBehaviour
 {
     [SerializeField] private TMP_Text _moveTxt;
     public GameObject cameraParent;
+    public CameraControl cameraControl;
     public static GamePlay Instance;
     public PetManager petManager;
     public BaseManager baseManager;
@@ -37,9 +38,7 @@ public class GamePlay : MonoBehaviour
         if (testInput != "")
         {
             List<LevelData> levelData = ReadConfig(testInput, false);
-            currentLevelData = levelData.FirstOrDefault();
-            baseManager.Init(levelData.FirstOrDefault().boardDesign);
-            move = levelData.FirstOrDefault().moveMax;
+            Init(levelData[0]);
             Invoke(nameof(UpdateMoveText),0.1f);
         }
     }
@@ -100,12 +99,23 @@ public class GamePlay : MonoBehaviour
     }
     void Start()
     {
-        currentLevelData = allLevelData[level];
-        baseManager.Init(allLevelData[level].boardDesign);
-        move = allLevelData[level].moveMax;
-        UpdateMoveText();
-        testInput = $"{{{levelConfigs[level + 1]}}}";
+        // currentLevelData = allLevelData[level];
+        // baseManager.Init(allLevelData[level].boardDesign);
+        // move = allLevelData[level].moveMax;
+        // UpdateMoveText();
+        // testInput = $"{{{levelConfigs[level + 1]}}}";
+        Init(allLevelData[level]);
         envManager.Init();
+    }
+
+    void Init(LevelData levelData)
+    {
+        currentLevelData = levelData;
+        baseManager.Init(levelData.boardDesign);
+        move = levelData.moveMax;
+        UpdateMoveText();
+        cameraControl.UpdateCamera(new Vector2(levelData.lineConfigs.Count, levelData.lineConfigs.Max(x => x.size)));
+        testInput = $"{{{levelData.config}}}";
     }
 
 
@@ -182,22 +192,14 @@ public class GamePlay : MonoBehaviour
             StopAllCoroutines();
             level++;
             Reset();
-            baseManager.Init(allLevelData[level].boardDesign);
-            currentLevelData = allLevelData[level];
-            move = allLevelData[level].moveMax;
-            testInput = $"{{{levelConfigs[level + 1]}}}";
-            UpdateMoveText();
+            Init(allLevelData[level]);
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
             StopAllCoroutines();
             level--;
             Reset();
-            baseManager.Init(allLevelData[level].boardDesign);
-            currentLevelData = allLevelData[level];
-            move = allLevelData[level].moveMax;
-            testInput = $"{{{levelConfigs[level + 1]}}}";
-            UpdateMoveText();
+            Init(allLevelData[level]);
         }
     }
 
@@ -208,20 +210,13 @@ public class GamePlay : MonoBehaviour
         if (level >= allLevelData.Count - 1) return;
         level++;
         Reset();
-        currentLevelData = allLevelData[level];
-        baseManager.Init(allLevelData[level].boardDesign);
-        testInput = $"{{{levelConfigs[level + 1]}}}";
-        move = allLevelData[level].moveMax;
+        Init(allLevelData[level]);
     }
 
     public void Restart()
     {
         Reset();
-        baseManager.Init(allLevelData[level].boardDesign);
-        currentLevelData = allLevelData[level];
-        move = allLevelData[level].moveMax;
-        testInput = $"{{{levelConfigs[level + 1]}}}";
-        UpdateMoveText();
+        Init(allLevelData[level]);
     }
 
     public void CheckWin()
