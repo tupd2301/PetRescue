@@ -88,7 +88,7 @@ public class GamePlay : MonoBehaviour
                     if (lineStrings[j + k].Contains('['))
                     {
                         string[] valueString = lineStrings[j + k].Split("[")[1].Split("]");
-                        if (valueString.Count() == 2)
+                        if (valueString[0].Contains("|") == false)
                         {
                             ints.Add(Int32.Parse(valueString[0]));
                         }
