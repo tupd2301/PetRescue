@@ -73,7 +73,7 @@ public class BaseComponent : MonoBehaviour
                 GetComponentInChildren<Animator>().Play("Bounce");
                 if (GamePlay.Instance?.petManager.CheckPetExist(baseData.coordinates) == false) return;
                 PetComponent petLock = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates).petComponent;
-                if (petLock && !petLock.isHide && GetComponent<LockTile>().isUnlocked)
+                if (petLock && !petLock.isHide && GetComponent<SpecialTileLock>().isUnlocked)
                 {
                     petLock.Run(GamePlay.Instance.baseManager.GetBaseDestination(petLock.petData), petLock.petData.baseCoordinates);
                     GamePlay.Instance.Move();

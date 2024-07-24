@@ -265,12 +265,12 @@ public class GamePlay : MonoBehaviour
 
     public void UnlockAll()
     {
-        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false && x.obj.GetComponent<LockTile>()).ToList();
+        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false && x.obj.GetComponent<SpecialTileLock>()).ToList();
         foreach (var item in collection)
         {
-            if (item.obj.GetComponent<LockTile>().isUnlocked == false)
+            if (item.obj.GetComponent<SpecialTileLock>().isUnlocked == false)
             {
-                item.obj.GetComponent<LockTile>().Unlock();
+                item.obj.GetComponent<SpecialTileLock>().Unlock();
             }
         }
     }

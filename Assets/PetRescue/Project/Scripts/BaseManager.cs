@@ -92,6 +92,22 @@ public class BaseManager : MonoBehaviour
         }
         return activeBoard;
     }
+    public IEnumerator SinkBases(List<BaseData> baseDatas)
+    {
+        List<BaseData> sortedList = baseDatas.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
+        int total = sortedList.Count;
+        Debug.Log(total);
+        for (int i = 0; i < total; i++)
+        {
+            System.Random random = new System.Random();
+            int index = random.Next(0, sortedList.Count);
+            if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
+            sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f).SetEase(Ease.Linear);
+            // sortedList[index].obj.GetComponent<BaseComponent>().CallSplashVFX();
+            sortedList.Remove(sortedList[index]);
+            yield return new WaitForSeconds(random.Next(0, 5) * 0.05f);
+        }
+    }
     public IEnumerator SinkAll()
     {
         List<BaseData> sortedList = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
@@ -234,7 +250,7 @@ public class BaseManager : MonoBehaviour
             case 11:
                 gameObj.GetComponent<BaseComponent>().type = BaseType.Lock;
                 gameObj.GetComponent<BaseComponent>().SetModel("lock");
-                LockTile lockTile = gameObj.AddComponent<LockTile>();
+                SpecialTileLock lockTile = gameObj.AddComponent<SpecialTileLock>();
                 lockTile.count = GamePlay.Instance.GetValues(valueData.trueCoordinates)[2];
                 Debug.Log("Lock");
 

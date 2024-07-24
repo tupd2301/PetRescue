@@ -88,7 +88,7 @@ public class PetComponent : MonoBehaviour
         GameObject obj = data.First().Value.obj;
         if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) 
                 && !obj.GetComponent<BaseComponent>().isHide
-                || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<LockTile>().isUnlocked)
+                || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked)
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
