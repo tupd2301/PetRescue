@@ -91,7 +91,6 @@ public class PetComponent : MonoBehaviour
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
         GameObject obj = data.First().Value.obj;
-        if(obj.GetComponent<BaseComponent>().isHide == false) return;
         if ((GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates))
                 || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked && obj.GetComponent<BaseComponent>().isHide == false)
                 || (obj.GetComponent<BaseComponent>().type == BaseType.Boom && obj.GetComponent<BaseComponent>().isHide == false)
