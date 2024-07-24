@@ -28,10 +28,9 @@ public class PetComponent : MonoBehaviour
         {
             transform.DOLocalMoveY(3f, 0.5f).OnComplete(() =>
             {
-                            Debug.Log("Next");
+                Debug.Log("Next");
                 // baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
                 SoundManager.Instance.PlaySound("splash");
-                GamePlay.Instance.OnPetJump?.Invoke();
                 transform.DOLocalMoveY(-2f, 0.5f).OnComplete(() =>
                 {
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);
@@ -86,7 +85,7 @@ public class PetComponent : MonoBehaviour
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
         GameObject obj = data.First().Value.obj;
-        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) 
+        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates)
                 && !obj.GetComponent<BaseComponent>().isHide
                 || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked)
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
@@ -105,6 +104,9 @@ public class PetComponent : MonoBehaviour
         System.Random random = new System.Random();
         if (random.Next(0, 100) < 100)
             SoundManager.Instance.PlaySound("preRoll");
+
+        GamePlay.Instance.OnPetJump?.Invoke();
+
         transform.DOLocalMoveY(5, 0.3f).OnComplete(() =>
         {
             transform.DOLocalMoveY(1.2f, 0.3f).OnComplete(() =>
