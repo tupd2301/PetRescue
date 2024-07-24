@@ -45,7 +45,7 @@ public class PetComponent : MonoBehaviour
                         transform.DOMove(des, 10f * (distance / 3f))
                         .OnUpdate(() =>
                         {
-                            transform.localPosition = new Vector3(transform.localPosition.x, -0.1f, transform.localPosition.z);
+                            transform.localPosition = new Vector3(transform.localPosition.x, -0.3f, transform.localPosition.z);
                         })
                         .SetLoops(20, LoopType.Incremental)
                         .OnComplete(() => gameObject.SetActive(false));
@@ -91,10 +91,10 @@ public class PetComponent : MonoBehaviour
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
         GameObject obj = data.First().Value.obj;
-        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates)
-                && !obj.GetComponent<BaseComponent>().isHide
-                || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked)
-                || obj.GetComponent<BaseComponent>().type == BaseType.Boom
+        if(obj.GetComponent<BaseComponent>().isHide) return;
+        if ((GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates))
+                || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked && obj.GetComponent<BaseComponent>().isHide == false)
+                || (obj.GetComponent<BaseComponent>().type == BaseType.Boom && obj.GetComponent<BaseComponent>().isHide == false)
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)

@@ -15,21 +15,21 @@ MonoBehaviour:
   lightingModel: 0
   useFlatLighting: 0
   renderQueueIndex: 0
-  color: {r: 0.9292453, g: 1, b: 0.9924191, a: 0.45490196}
+  color: {r: 0.1254902, g: 0.9411765, b: 1, a: 0.5882353}
   specColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
-  smoothness: 0.529
+  smoothness: 0.56
   enableLightAbsorption: 1
-  depthColor: {r: 0.2688679, g: 0.8981708, b: 1, a: 0.54509807}
-  maxDepth: 10
+  depthColor: {r: 0.12549019, g: 0.9400956, b: 1, a: 0.8784314}
+  maxDepth: 0.5
   enableFoam: 1
-  foamColor: {r: 1, g: 1, b: 1, a: 0.6509804}
-  foamDistance: 3.1
+  foamColor: {r: 1, g: 1, b: 1, a: 0.8509804}
+  foamDistance: 1
   enableFoamHQ: 1
-  foamNoiseScaleHQ: 0.17
+  foamNoiseScaleHQ: 0.1
   foamNoiseSpeedHQ: 1
-  shorelineFoamStrength: 1
-  crestFoamStrength: 0.105
-  crestMaxDepth: 25.61
+  shorelineFoamStrength: 0.5
+  crestFoamStrength: 0.11
+  crestMaxDepth: 0.1
   slopeFoamStrength: 0.265
   slopeFoamFlowSpeed: 30
   slopeFoamDistance: 75

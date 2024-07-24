@@ -120,6 +120,7 @@ public class BaseManager : MonoBehaviour
             int index = random.Next(0, sortedList.Count);
             if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
             sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f * timeScale).SetEase(Ease.Linear);
+            sortedList[index].obj.GetComponent<BaseComponent>().isHide = true;
             sortedList.Remove(sortedList[index]);
             yield return new WaitForSeconds(random.Next(0, 5) * 0.05f * timeScale);
         }
