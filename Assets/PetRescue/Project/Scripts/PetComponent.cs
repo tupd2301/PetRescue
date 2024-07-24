@@ -85,10 +85,13 @@ public class PetComponent : MonoBehaviour
 
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
-        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) && !data.First().Value.obj.GetComponent<BaseComponent>().isHide
-                || data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
-                || data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
-                || data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
+        GameObject obj = data.First().Value.obj;
+        if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates) 
+                && !obj.GetComponent<BaseComponent>().isHide
+                || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<LockTile>().isUnlocked)
+                || obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
+                || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
+                || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
         {
             Bounce(data, originCoordinates);
             return;

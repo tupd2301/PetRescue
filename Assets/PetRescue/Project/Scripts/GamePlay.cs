@@ -125,7 +125,7 @@ public class GamePlay : MonoBehaviour
         // testInput = $"{{{levelConfigs[level + 1]}}}";
         Init(allLevelData[level]);
         envManager.Init();
-        OnPetJump += UnlockAll;
+        OnPetJump = UnlockAll;
     }
 
     void Init(LevelData levelData)
@@ -265,16 +265,12 @@ public class GamePlay : MonoBehaviour
 
     public void UnlockAll()
     {
-        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == true && x.obj.GetComponent<LockTile>()).ToList();
+        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false && x.obj.GetComponent<LockTile>()).ToList();
         foreach (var item in collection)
         {
             if (item.obj.GetComponent<LockTile>().isUnlocked == false)
             {
                 item.obj.GetComponent<LockTile>().Unlock();
-            }
-            if(item.obj.GetComponent<LockTile>().isUnlocked)
-            {
-                item.obj.GetComponent<BaseComponent>().SetModel("normal");
             }
         }
     }

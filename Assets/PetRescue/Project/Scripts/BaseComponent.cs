@@ -69,6 +69,16 @@ public class BaseComponent : MonoBehaviour
                     GamePlay.Instance.Move();
                 }
                 break;
+            case BaseType baseType when baseType == BaseType.Lock:
+                GetComponentInChildren<Animator>().Play("Bounce");
+                if (GamePlay.Instance?.petManager.CheckPetExist(baseData.coordinates) == false) return;
+                PetComponent petLock = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates).petComponent;
+                if (petLock && !petLock.isHide && GetComponent<LockTile>().isUnlocked)
+                {
+                    petLock.Run(GamePlay.Instance.baseManager.GetBaseDestination(petLock.petData), petLock.petData.baseCoordinates);
+                    GamePlay.Instance.Move();
+                }
+                break;
             case BaseType baseType when baseType == BaseType.SwapUpDown || baseType == BaseType.SwapLeftUp || baseType == BaseType.SwapLeftDown:
                 bool isSwap = GamePlay.Instance.baseManager.Swap(baseData);
                 _swapUI.transform.DOLocalRotate(_swapUI.transform.localEulerAngles - new Vector3(0, 0, 360), 1f, RotateMode.FastBeyond360);

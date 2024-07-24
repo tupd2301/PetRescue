@@ -9,9 +9,11 @@ public class LockTile : MonoBehaviour
     public void Unlock()
     {
         count--;
+        Debug.Log(count);
         if (count == 0)
         {
             isUnlocked = true;
+            gameObject.GetComponent<BaseComponent>().SetModel("normal");
         }
     }
 }
