@@ -177,6 +177,7 @@ public class GamePlay : MonoBehaviour
 
     public void UpdateMoveText()
     {
+        if(move < 0) move = 0;
         _moveTxt.text = "Moves: " + move.ToString();
     }
 
@@ -241,7 +242,7 @@ public class GamePlay : MonoBehaviour
 
     public void CheckWin()
     {
-        if (move > 0)
+        if (move >= 0)
         {
             if (petManager.GetPetCount() == 0)
             {
