@@ -109,7 +109,7 @@ public class BaseManager : MonoBehaviour
         }
         return activeBoard;
     }
-    public IEnumerator SinkBases(List<BaseData> baseDatas)
+    public IEnumerator SinkBases(List<BaseData> baseDatas, float timeScale = 1f)
     {
         List<BaseData> sortedList = baseDatas.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
         int total = sortedList.Count;
@@ -119,10 +119,9 @@ public class BaseManager : MonoBehaviour
             System.Random random = new System.Random();
             int index = random.Next(0, sortedList.Count);
             if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
-            sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f).SetEase(Ease.Linear);
-            // sortedList[index].obj.GetComponent<BaseComponent>().CallSplashVFX();
+            sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f * timeScale).SetEase(Ease.Linear);
             sortedList.Remove(sortedList[index]);
-            yield return new WaitForSeconds(random.Next(0, 5) * 0.05f);
+            yield return new WaitForSeconds(random.Next(0, 5) * 0.05f * timeScale);
         }
     }
     public IEnumerator SinkAll()
@@ -228,6 +227,9 @@ public class BaseManager : MonoBehaviour
             {
                 switch (list[1])
                 {
+                    case 12:
+                        SpawnBase(gameObj, 12, item);
+                        break;
                     case 11:
                         SpawnBase(gameObj, list[1], item);
                         break;
@@ -269,8 +271,11 @@ public class BaseManager : MonoBehaviour
                 gameObj.GetComponent<BaseComponent>().SetModel("lock");
                 SpecialTileLock lockTile = gameObj.AddComponent<SpecialTileLock>();
                 lockTile.count = GamePlay.Instance.GetValues(valueData.trueCoordinates)[2];
-                Debug.Log("Lock");
-
+                break;
+            case 12:
+                gameObj.GetComponent<BaseComponent>().type = BaseType.Boom;
+                gameObj.GetComponent<BaseComponent>().SetModel("boom");
+                SpecialTileBoom boomTile = gameObj.AddComponent<SpecialTileBoom>();
                 break;
             default: break;
         }
@@ -375,6 +380,7 @@ public class BaseManager : MonoBehaviour
         {
             if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates)
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.Stop
+                || baseData.obj.GetComponent<BaseComponent>().type == BaseType.Boom
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
                 || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
@@ -432,6 +438,19 @@ public class BaseManager : MonoBehaviour
     public Dictionary<int, BaseData> GetBaseDestination(PetData petData)
     {
         return CalculateDestinationForPet(petData.baseCoordinates, petData.direction);
+    }
+
+    public List<BaseData> GetBaseNearByCoordinates(Vector2 coordinates)
+    {
+        List<BaseData> list = new List<BaseData>();
+        list.Add(bases.FirstOrDefault(x => x.coordinates == coordinates + new Vector2(0, 1)));
+        list.Add(bases.FirstOrDefault(x => x.coordinates == coordinates + new Vector2(0, -1)));
+        list.Add(bases.FirstOrDefault(x => x.coordinates == coordinates + new Vector2(1, -1)));
+        list.Add(bases.FirstOrDefault(x => x.coordinates == coordinates + new Vector2(-1, 1)));
+        list.Add(bases.FirstOrDefault(x => x.coordinates == coordinates + new Vector2(1, 0)));
+        list.Add(bases.FirstOrDefault(x => x.coordinates == coordinates + new Vector2(-1, 0)));
+
+        return list;
     }
 }
 [System.Serializable]

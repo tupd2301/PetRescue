@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class SpecialTileBoom : MonoBehaviour
 {
-    public int count;
-    public bool isUnlocked = false;
     public void Explosion()
     {
-        count--;
-        Debug.Log(count);
-        if (count == 0)
-        {
-            isUnlocked = true;
-            gameObject.GetComponent<BaseComponent>().SetModel("normal");
-        }
+        List<BaseData> list = GamePlay.Instance.baseManager.GetBaseNearByCoordinates(GetComponent<BaseComponent>().baseData.coordinates);
+        list.Add(GetComponent<BaseComponent>().baseData);
+        StartCoroutine(GamePlay.Instance.baseManager.SinkBases(list, 0.1f));
     }
 }

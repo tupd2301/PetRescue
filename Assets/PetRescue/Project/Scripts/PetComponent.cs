@@ -22,9 +22,9 @@ public class PetComponent : MonoBehaviour
         this.petData = petData;
     }
 
-    public void Next(BaseData baseData, Vector3 oriPos)
+    public void Next(BaseData baseData, Vector3 oriPos, bool isForce = false)
     {
-        if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates))
+        if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates) || isForce)
         {
             transform.DOLocalMoveY(3f, 0.5f).OnComplete(() =>
             {
@@ -68,6 +68,12 @@ public class PetComponent : MonoBehaviour
         transform.DOMove(destination - direction * 1, 0.4f * (data.First().Key - 1))
                 .OnComplete(() =>
                 {
+                    if (baseComponent.GetComponent<SpecialTileBoom>() != null)
+                    {
+                        baseComponent.GetComponent<SpecialTileBoom>().Explosion();
+                        Next(data.First().Value, origin, true);
+                        return;
+                    }
                     SoundManager.Instance.PlaySound("collide");
                     PetData petDataExist = GamePlay.Instance.petManager.GetPetByCoordinates(data.First().Value.coordinates);
                     if (petDataExist != null) petDataExist.petModelData.model.GetComponent<Animator>().Play("Bounce");
@@ -88,6 +94,7 @@ public class PetComponent : MonoBehaviour
         if (GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates)
                 && !obj.GetComponent<BaseComponent>().isHide
                 || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked)
+                || obj.GetComponent<BaseComponent>().type == BaseType.Boom
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
                 || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)

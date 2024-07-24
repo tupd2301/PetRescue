@@ -88,11 +88,18 @@ public class GamePlay : MonoBehaviour
                     if (lineStrings[j + k].Contains('['))
                     {
                         string[] valueString = lineStrings[j + k].Split("[")[1].Split("]");
-                        ints.Add(Int32.Parse(valueString[1]));
-                        string[] strings = valueString[0].Split("|");
-                        for (int l = 0; l < strings.Length; l++)
+                        if (valueString.Count() == 2)
                         {
-                            ints.Add(Int32.Parse(strings[l]));
+                            ints.Add(Int32.Parse(valueString[0]));
+                        }
+                        else
+                        {
+                            ints.Add(Int32.Parse(valueString[1]));
+                            string[] strings = valueString[0].Split("|");
+                            for (int l = 0; l < strings.Length; l++)
+                            {
+                                ints.Add(Int32.Parse(strings[l]));
+                            }
                         }
                     }
                     else
@@ -177,8 +184,9 @@ public class GamePlay : MonoBehaviour
 
     public void UpdateMoveText()
     {
-        if(move < 0) move = 0;
-        _moveTxt.text = "Moves: " + move.ToString();
+        int number = move;
+        if (move < 0) number = 0;
+        _moveTxt.text = "Moves: " + number.ToString();
     }
 
     public void Move()

@@ -102,7 +102,7 @@ public class BaseComponent : MonoBehaviour
                 _swapUI.transform.DOLocalRotate(_swapUI.transform.localEulerAngles - new Vector3(0, 0, 360), 1f, RotateMode.FastBeyond360);
                 GamePlay.Instance.Move();
                 break;
-            case BaseType baseType when baseType == BaseType.Hide:
+            case BaseType baseType when baseType == BaseType.Hide || baseType == BaseType.Boom:
                 break;
             default:
                 GetComponentInChildren<Animator>().Play("Bounce");
@@ -121,7 +121,8 @@ public enum BaseType
     SwapUpDown,
     SwapLeftUp,
     SwapLeftDown,
-    Lock
+    Lock,
+    Boom
 }
 
 [System.Serializable]
