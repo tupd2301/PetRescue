@@ -71,6 +71,7 @@ public class PetComponent : MonoBehaviour
                     if (baseComponent.GetComponent<SpecialTileBoom>() != null)
                     {
                         baseComponent.GetComponent<SpecialTileBoom>().Explosion();
+                        GamePlay.Instance.OnPetJump?.Invoke();
                         Next(data.First().Value, origin, true);
                         return;
                     }
