@@ -24,7 +24,7 @@ public class PetComponent : MonoBehaviour
 
     public void Next(BaseData baseData, Vector3 oriPos, bool isForce = false)
     {
-        if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates) || isForce)
+        // if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates) || isForce)
         {
             transform.DOLocalMoveY(3f, 0.5f).OnComplete(() =>
             {
@@ -36,7 +36,7 @@ public class PetComponent : MonoBehaviour
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);
                     transform.DOLocalMoveY(-0.1f, 0.3f).OnComplete(() =>
                     {
-                        isHide = true;
+
                         GamePlay.Instance.CheckWin();
                         _ripplesVFX.SetActive(true);
                         Vector3 des = transform.position + (transform.position - oriPos);
@@ -113,6 +113,7 @@ public class PetComponent : MonoBehaviour
             SoundManager.Instance.PlaySound("preRoll");
 
         GamePlay.Instance.OnPetJump?.Invoke();
+        isHide = true;
 
         transform.DOLocalMoveY(5, 0.3f).OnComplete(() =>
         {
