@@ -16,6 +16,23 @@ public class BaseManager : MonoBehaviour
     private List<BaseData> sandList = new List<BaseData>();
     public List<Vector2> activeBoardList = new List<Vector2>();
 
+    public bool isShowCoordinate
+    {
+        get
+        {
+            return isShowCoordinate;
+        }
+        set
+        {
+            isShowCoordinate = value;
+            foreach (var item in bases)
+            {
+                if(item.obj.GetComponent<BaseComponent>().isHide == false)
+                    item.obj.GetComponent<BaseComponent>().ShowCoordinate(isShowCoordinate);
+            }
+        }
+    }
+
     public void Reset()
     {
         foreach (var item in bases)
@@ -174,7 +191,7 @@ public class BaseManager : MonoBehaviour
                 if (y > 1) newX = x - y / 2;
                 if (y == 1) newX = x;
                 baseObj.name = "Base (" + newX + "," + y + ")";
-                if (baseObj.GetComponentInChildren<TMP_Text>()) baseObj.GetComponentInChildren<TMP_Text>().text = newX + "," + y;
+                baseObj.GetComponent<BaseComponent>().SetCoordinateText(newX,y);
                 baseObj.SetActive(false);
                 BaseData newBase = new BaseData();
                 newBase.id = newX * middle + y;

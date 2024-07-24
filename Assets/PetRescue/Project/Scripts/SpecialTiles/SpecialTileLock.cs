@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class SpecialTileLock : MonoBehaviour
 {
-    public int count;
+
+    private int _count;
+    public int count
+    {
+        get
+        {
+            return _count;
+        }
+        set
+        {
+            _count = value;
+            gameObject.GetComponent<BaseComponent>().SetLockText(_count);
+        }
+    }
     public bool isUnlocked = false;
     public void Unlock()
     {

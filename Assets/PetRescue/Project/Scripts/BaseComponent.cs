@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class BaseComponent : MonoBehaviour
 {
+    [SerializeField] private TMP_Text _coordinateText;
+    [SerializeField] private TMP_Text _lockText;
+
     [SerializeField] private GameObject _splashVFX;
     [SerializeField] private GameObject _swapUI;
     public GameObject main;
@@ -20,6 +24,20 @@ public class BaseComponent : MonoBehaviour
 
     [SerializeField] private List<BaseModelData> baseModelDatas = new List<BaseModelData>();
     [SerializeField] private List<GameObject> grassModels = new List<GameObject>();
+
+    public void ShowCoordinate(bool isShow =  false)
+    {
+        _coordinateText.gameObject.SetActive(isShow);
+    }
+    public void SetCoordinateText(int x, int y)
+    {
+        _coordinateText.text = x.ToString() + "," + y.ToString();
+    }
+    public void SetLockText(int count)
+    {
+        _lockText.gameObject.SetActive(count > 0);
+        _lockText.text = count.ToString();
+    }
 
     public void SetType(BaseType type)
     {
