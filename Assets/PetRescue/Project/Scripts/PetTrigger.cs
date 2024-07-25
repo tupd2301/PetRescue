@@ -31,14 +31,14 @@ public class PetTrigger : MonoBehaviour
     private void TriggerTouch()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        RaycastHit hit;
 
-            if (coll.Raycast(ray, out hit, 100))
-            {
-                Transform t = petComponent.petData.petModelData.model.transform;
-                int rotateX = t.localEulerAngles.x == -150f ? 0 : -150;
-                t.DOLocalMoveY(-2.5f, 0.3f).OnComplete(() => t.DOLocalMoveY(0.3f*rotateX<0?2f:1, 0.3f));
-                t.DOLocalRotate(new Vector3(rotateX, t.localEulerAngles.y, t.localEulerAngles.z),0.3f);
-            }
+        if (coll.Raycast(ray, out hit, 100))
+        {
+            Transform t = petComponent.petData.petModelData.model.transform;
+            int rotateX = t.localEulerAngles.x == -150f ? 0 : -150;
+            t.DOLocalMoveY(-2.5f, 0.3f).OnComplete(() => t.DOLocalMoveY(rotateX == -150 ? 1.3f : -0.5f, 0.3f));
+            t.DOLocalRotate(new Vector3(rotateX, t.localEulerAngles.y, t.localEulerAngles.z), 0.3f);
+        }
     }
 }

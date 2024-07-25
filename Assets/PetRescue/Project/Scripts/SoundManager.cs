@@ -40,15 +40,22 @@ public class SoundManager : MonoBehaviour
         List<SoundData> datas = sounds.FindAll(x => x.name == name);
         foreach (SoundData sound in datas)
         {
-            if (sound != null && sound.clipPaths.Count>0)
+            if (sound != null && sound.clipPaths.Count > 0)
             {
                 int index = Random.Range(0, sound.clipPaths.Count);
                 AudioSource audioSource = audioSources.FirstOrDefault(x => x.type == sound.audioSourceType).audioSource;
                 AudioClip audioClip = Resources.Load<AudioClip>("SFXs/" + sound.clipPaths[index]);
-                if(audioClip == null) return;
+                if (audioClip == null) return;
                 audioSource.clip = audioClip;
                 audioSource.pitch = sound.speedScale;
-                audioSource.PlayOneShot(audioSource.clip, sound.volumeScale);
+                if (sound.audioSourceType == AudioSourceType.BGM)
+                {
+                    audioSource.Play();
+                }
+                else
+                {
+                    audioSource.PlayOneShot(audioSource.clip, sound.volumeScale);
+                }
             }
         }
     }
