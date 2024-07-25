@@ -257,6 +257,7 @@ public class GamePlay : MonoBehaviour
     {
         if (move >= 0 && isFinish == false)
         {
+            Debug.Log("Win " + petManager.GetPetCount());
             if (petManager.GetPetCount() == 0)
             {
                 isFinish = true;

@@ -19,5 +19,6 @@ public class SpecialTileBoom : MonoBehaviour
             }
         }
         StartCoroutine(GamePlay.Instance.baseManager.SinkBases(list, 0.1f));
+
     }
 }
