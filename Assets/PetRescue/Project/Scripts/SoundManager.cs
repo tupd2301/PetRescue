@@ -44,7 +44,9 @@ public class SoundManager : MonoBehaviour
             {
                 int index = Random.Range(0, sound.clipPaths.Count);
                 AudioSource audioSource = audioSources.FirstOrDefault(x => x.type == sound.audioSourceType).audioSource;
-                audioSource.clip = Resources.Load<AudioClip>("SFXs/"+sound.clipPaths[index]);
+                AudioClip audioClip = Resources.Load<AudioClip>("SFXs/" + sound.clipPaths[index]);
+                if(audioClip == null) return;
+                audioSource.clip = audioClip;
                 audioSource.pitch = sound.speedScale;
                 audioSource.PlayOneShot(audioSource.clip, sound.volumeScale);
             }
