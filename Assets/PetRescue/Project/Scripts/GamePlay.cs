@@ -25,6 +25,8 @@ public class GamePlay : MonoBehaviour
 
     public int move = 0;
 
+    public bool isFinish = false;
+
     public LevelData currentLevelData;
 
     public System.Action OnPetJump;
@@ -139,6 +141,7 @@ public class GamePlay : MonoBehaviour
 
     void Init(LevelData levelData)
     {
+        isFinish = false;
         currentLevelData = levelData;
         baseManager.Init(levelData.boardDesign);
         move = levelData.moveMax;
@@ -197,7 +200,7 @@ public class GamePlay : MonoBehaviour
         UpdateMoveText();
         if (move <= 0)
         {
-            // CheckWin();
+            CheckWin();
         }
     }
     public void SpawnPets()
@@ -252,10 +255,11 @@ public class GamePlay : MonoBehaviour
 
     public void CheckWin()
     {
-        if (move >= 0)
+        if (move >= 0 && isFinish == false)
         {
             if (petManager.GetPetCount() == 0)
             {
+                isFinish = true;
                 Debug.Log("Win");
                 SoundManager.Instance.PlaySound("win");
                 StartCoroutine(baseManager.SinkAll());
@@ -266,6 +270,7 @@ public class GamePlay : MonoBehaviour
         {
             if (petManager.GetPetCount() > 0)
             {
+                isFinish = true;
                 Debug.Log("Lose");
                 SoundManager.Instance.PlaySound("lose");
                 StartCoroutine(baseManager.SinkAll());

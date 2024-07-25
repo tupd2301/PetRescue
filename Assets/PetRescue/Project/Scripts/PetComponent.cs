@@ -36,7 +36,6 @@ public class PetComponent : MonoBehaviour
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);
                     transform.DOLocalMoveY(-0.1f, 0.3f).OnComplete(() =>
                     {
-
                         GamePlay.Instance.CheckWin();
                         // _ripplesVFX.SetActive(true);
                         Vector3 des = transform.position + (transform.position - oriPos);
