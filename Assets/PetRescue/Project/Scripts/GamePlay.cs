@@ -125,6 +125,8 @@ public class GamePlay : MonoBehaviour
     }
     void Start()
     {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0; 
         // currentLevelData = allLevelData[level];
         // baseManager.Init(allLevelData[level].boardDesign);
         // move = allLevelData[level].moveMax;

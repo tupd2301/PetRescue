@@ -129,7 +129,7 @@ public class BaseManager : MonoBehaviour
     {
         List<BaseData> sortedList = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
         int total = sortedList.Count;
-        Debug.Log(total);
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < total; i++)
         {
             System.Random random = new System.Random();
