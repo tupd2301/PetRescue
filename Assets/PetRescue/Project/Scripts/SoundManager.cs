@@ -48,13 +48,14 @@ public class SoundManager : MonoBehaviour
                 if (audioClip == null) return;
                 audioSource.clip = audioClip;
                 audioSource.pitch = sound.speedScale;
+                audioSource.volume = sound.volumeScale;
                 if (sound.audioSourceType == AudioSourceType.BGM)
                 {
                     audioSource.Play();
                 }
                 else
                 {
-                    audioSource.PlayOneShot(audioSource.clip, sound.volumeScale);
+                    audioSource.PlayOneShot(audioSource.clip);
                 }
             }
         }
