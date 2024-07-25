@@ -11,10 +11,12 @@ public class PetComponent : MonoBehaviour
     public PetData petData;
 
     public bool isHide;
+    public bool isBusy;
 
     void Start()
     {
         isHide = false;
+        isBusy = false;
     }
 
     public void SetData(PetData petData)
@@ -59,10 +61,10 @@ public class PetComponent : MonoBehaviour
     {
         Vector3 origin = transform.position;
         petData.petModelData.model.GetComponent<Animator>().Play("Roll");
-        petData.baseCoordinates = data.First().Value.coordinates;
+        // petData.baseCoordinates = data.First().Value.coordinates;
         BaseComponent baseComponent = data.First().Value.obj.GetComponent<BaseComponent>();
         Vector3 destination = new Vector3(baseComponent.spawnPoint.transform.position.x, 1, baseComponent.spawnPoint.transform.position.z);
-        petData.baseCoordinates = originCoordinates;
+        // petData.baseCoordinates = originCoordinates;
         Vector3 direction = (destination - transform.position).normalized;
         transform.DOMove(destination - direction * 1, 0.4f * (data.First().Key - 1))
                 .OnComplete(() =>
@@ -83,6 +85,7 @@ public class PetComponent : MonoBehaviour
                     {
                         transform.localEulerAngles = new Vector3(0, 0, 0);
                         petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");
+                        isBusy = false;
                     });
                     // transform.DOLocalMoveY(5, 0.4f).OnComplete(() => transform.DOLocalMoveY(1.2f, 0.6f));
                 });
@@ -90,6 +93,7 @@ public class PetComponent : MonoBehaviour
 
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
+        isBusy = true;
         GameObject obj = data.First().Value.obj;
         if ((GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates))
                 || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked && obj.GetComponent<BaseComponent>().isHide == false)
@@ -129,6 +133,7 @@ public class PetComponent : MonoBehaviour
                     })
                     .OnComplete(() =>
                     {
+                        isBusy = false;
                         if (isStop)
                         {
                             petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");

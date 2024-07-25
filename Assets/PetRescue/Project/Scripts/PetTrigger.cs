@@ -32,9 +32,10 @@ public class PetTrigger : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
+        
         if (coll.Raycast(ray, out hit, 100))
         {
+            if(GetComponent<PetComponent>().isHide == false) return;
             Transform t = petComponent.petData.petModelData.model.transform;
             int rotateX = t.localEulerAngles.x == -150f ? 0 : -150;
             t.DOLocalMoveY(-2.5f, 0.3f).OnComplete(() => t.DOLocalMoveY(rotateX == -150 ? 1.3f : -0.5f, 0.3f));

@@ -25,7 +25,7 @@ public class BaseComponent : MonoBehaviour
     [SerializeField] private List<BaseModelData> baseModelDatas = new List<BaseModelData>();
     [SerializeField] private List<GameObject> grassModels = new List<GameObject>();
 
-    public void ShowCoordinate(bool isShow =  false)
+    public void ShowCoordinate(bool isShow = false)
     {
         _coordinateText.gameObject.SetActive(isShow);
     }
@@ -99,8 +99,11 @@ public class BaseComponent : MonoBehaviour
                 break;
             case BaseType baseType when baseType == BaseType.SwapUpDown || baseType == BaseType.SwapLeftUp || baseType == BaseType.SwapLeftDown:
                 bool isSwap = GamePlay.Instance.baseManager.Swap(baseData);
-                _swapUI.transform.DOLocalRotate(_swapUI.transform.localEulerAngles - new Vector3(0, 0, 360), 1f, RotateMode.FastBeyond360);
-                GamePlay.Instance.Move();
+                if (isSwap)
+                {
+                    _swapUI.transform.DOLocalRotate(_swapUI.transform.localEulerAngles - new Vector3(0, 0, 360), 1f, RotateMode.FastBeyond360);
+                    GamePlay.Instance.Move();
+                }
                 break;
             case BaseType baseType when baseType == BaseType.Hide || baseType == BaseType.Boom:
                 break;

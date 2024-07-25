@@ -420,6 +420,7 @@ public class BaseManager : MonoBehaviour
         }
         PetData pet1 = GamePlay.Instance.petManager.GetPetByCoordinates(portal1Coordinates);
         PetData pet2 = GamePlay.Instance.petManager.GetPetByCoordinates(portal2Coordinates);
+        if(pet1.petComponent.isBusy || pet2.petComponent.isBusy) return false;
         if (pet1 != null)
         {
             pet1.baseCoordinates = portal2Coordinates;
