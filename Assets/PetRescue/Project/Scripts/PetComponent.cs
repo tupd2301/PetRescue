@@ -116,7 +116,7 @@ public class PetComponent : MonoBehaviour
             SoundManager.Instance.PlaySound("preRoll");
 
         GamePlay.Instance.OnPetJump?.Invoke();
-        isHide = true;
+        if(!isStop)isHide = true;
 
         transform.DOLocalMoveY(5, 0.3f).OnComplete(() =>
         {
