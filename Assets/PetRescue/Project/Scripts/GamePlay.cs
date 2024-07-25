@@ -197,7 +197,7 @@ public class GamePlay : MonoBehaviour
         UpdateMoveText();
         if (move <= 0)
         {
-            CheckWin();
+            // CheckWin();
         }
     }
     public void SpawnPets()
