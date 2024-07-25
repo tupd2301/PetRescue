@@ -15,6 +15,7 @@ public class GamePlay : MonoBehaviour
     public PetManager petManager;
     public BaseManager baseManager;
     public EnvirontmentManager envManager;
+    public UIManager uiManager;
     public int level = 0;
 
     public List<LevelData> allLevelData = new List<LevelData>();
@@ -264,7 +265,8 @@ public class GamePlay : MonoBehaviour
                 Debug.Log("Win");
                 SoundManager.Instance.PlaySound("win");
                 StartCoroutine(baseManager.SinkAll());
-                Invoke(nameof(NextLevel), 3f);
+                StartCoroutine(uiManager.ShowWinPopup(2));
+                // Invoke(nameof(NextLevel), 3f);
             }
         }
         else
@@ -275,7 +277,8 @@ public class GamePlay : MonoBehaviour
                 Debug.Log("Lose");
                 SoundManager.Instance.PlaySound("lose");
                 StartCoroutine(baseManager.SinkAll());
-                Invoke(nameof(Restart), 3f);
+                StartCoroutine(uiManager.ShowLosePopup(2));
+                // Invoke(nameof(Restart), 3f);
             }
         }
     }
