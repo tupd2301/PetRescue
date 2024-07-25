@@ -27,7 +27,7 @@ public class BaseManager : MonoBehaviour
             isShowCoordinate = value;
             foreach (var item in bases)
             {
-                if(item.obj.GetComponent<BaseComponent>().isHide == false)
+                if (item.obj.GetComponent<BaseComponent>().isHide == false)
                     item.obj.GetComponent<BaseComponent>().ShowCoordinate(isShowCoordinate);
             }
         }
@@ -191,7 +191,7 @@ public class BaseManager : MonoBehaviour
                 if (y > 1) newX = x - y / 2;
                 if (y == 1) newX = x;
                 baseObj.name = "Base (" + newX + "," + y + ")";
-                baseObj.GetComponent<BaseComponent>().SetCoordinateText(newX,y);
+                baseObj.GetComponent<BaseComponent>().SetCoordinateText(newX, y);
                 baseObj.SetActive(false);
                 BaseData newBase = new BaseData();
                 newBase.id = newX * middle + y;
@@ -237,7 +237,7 @@ public class BaseManager : MonoBehaviour
                     default: break;
                 }
             }
-            else if(list.Count == 1) SpawnBase(gameObj, list[0], item);
+            else if (list.Count == 1) SpawnBase(gameObj, list[0], item);
         }
     }
     private void SpawnBase(GameObject obj, int id, ValueData valueData)
@@ -420,7 +420,7 @@ public class BaseManager : MonoBehaviour
         }
         PetData pet1 = GamePlay.Instance.petManager.GetPetByCoordinates(portal1Coordinates);
         PetData pet2 = GamePlay.Instance.petManager.GetPetByCoordinates(portal2Coordinates);
-        if(pet1.petComponent.isBusy || pet2.petComponent.isBusy) return false;
+        if ((pet1 != null && pet1.petComponent.isBusy) || (pet2 != null && pet2.petComponent.isBusy)) return false;
         if (pet1 != null)
         {
             pet1.baseCoordinates = portal2Coordinates;
