@@ -40,7 +40,7 @@ public class SoundManager : MonoBehaviour
         List<SoundData> datas = sounds.FindAll(x => x.name == name);
         foreach (SoundData sound in datas)
         {
-            if (sound != null)
+            if (sound != null && sound.clipPaths.Count>0)
             {
                 int index = Random.Range(0, sound.clipPaths.Count);
                 AudioSource audioSource = audioSources.FirstOrDefault(x => x.type == sound.audioSourceType).audioSource;
