@@ -18,6 +18,7 @@ public class SpecialTileBoom : MonoBehaviour
                 petComponent.isHide = true;
             }
         }
+        SoundManager.Instance.PlaySound("pop");
         StartCoroutine(GamePlay.Instance.baseManager.SinkBases(list, 0.1f));
 
     }

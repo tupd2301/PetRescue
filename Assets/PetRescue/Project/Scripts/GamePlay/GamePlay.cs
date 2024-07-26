@@ -16,6 +16,7 @@ public class GamePlay : MonoBehaviour
     public BaseManager baseManager;
     public EnvirontmentManager envManager;
     public UIManager uiManager;
+    public TutorialManager tutorialManager;
     public int level = 0;
 
     public List<LevelData> allLevelData = new List<LevelData>();
@@ -150,12 +151,14 @@ public class GamePlay : MonoBehaviour
         UpdateMoveText();
         cameraControl.UpdateCamera(new Vector2(levelData.lineConfigs.Count, levelData.lineConfigs.Max(x => x.size)));
         testInput = $"{{{levelData.config}}}";
-        UpdateTopContentUI();
+        uiManager.UpdateTopContentUI();
+        tutorialManager.InitTriggers();
     }
 
     public void UpdateTopContentUI()
     {
         uiManager.UpdateTopContentUI();
+        tutorialManager.ShowTutorial();
     }
 
 
@@ -276,7 +279,7 @@ public class GamePlay : MonoBehaviour
             }
             else
             {
-                if(move <= 0)
+                if (move <= 0)
                     Lose();
             }
         }

@@ -8,7 +8,7 @@ using UnityEngine;
 public class PetManager : MonoBehaviour
 {
     [SerializeField] private List<PetModelData> petModelDatas = new List<PetModelData>();
-    [SerializeField] private List<PetData> pets = new List<PetData>();
+    public List<PetData> pets = new List<PetData>();
     [SerializeField] private GameObject prefab;
     System.Random random = new System.Random();
 
@@ -93,7 +93,7 @@ public class PetManager : MonoBehaviour
 
         }
         GamePlay.Instance.StartCoroutine(GamePlay.Instance.uiManager.ShowIngameTopContent());
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         GamePlay.Instance.UpdateTopContentUI();
     }
     public bool CheckPetExist(Vector2 coordinates)

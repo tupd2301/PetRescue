@@ -7,6 +7,8 @@ public class BaseTrigger : MonoBehaviour
     public BaseComponent baseComponent;
     private Collider coll;
     private int currentFingerId;
+
+    public System.Action onBaseClickedForTutorial;
     void Start()
     {
         coll = GetComponent<Collider>();
@@ -35,7 +37,7 @@ public class BaseTrigger : MonoBehaviour
 
             if (coll.Raycast(ray, out hit, 100) && GamePlay.Instance.move > 0)
             {
-                Debug.Log("Clicked on Cube");
+                onBaseClickedForTutorial?.Invoke();
                 baseComponent.OnBaseClicked();
             }
     }
