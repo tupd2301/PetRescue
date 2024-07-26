@@ -11,6 +11,11 @@ public class IngameTopContentUI : MonoBehaviour
     [SerializeField] private Text _movesText;
     [SerializeField] private Text _totalTargetText;
     [SerializeField] private Text _currentTargetText;
+
+    void Awake()
+    {
+        _settingButton.onClick.AddListener(()=>GamePlay.Instance.ShowCheatInput());
+    }
     public void UpdateUI()
     {
         SetLevel();
