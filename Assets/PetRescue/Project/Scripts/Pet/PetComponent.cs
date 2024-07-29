@@ -10,13 +10,12 @@ public class PetComponent : MonoBehaviour
     [SerializeField] private GameObject _ripplesVFX;
     public PetData petData;
 
-    public bool isHide;
-    public bool isBusy;
+    
 
     void Start()
     {
-        isHide = false;
-        isBusy = false;
+        petData.isHide = false;
+        petData.isBusy = false;
     }
 
     public void SetData(PetData petData)
@@ -74,7 +73,7 @@ public class PetComponent : MonoBehaviour
                     if (baseComponent.GetComponent<SpecialTileBoom>() != null)
                     {
                         baseComponent.GetComponent<SpecialTileBoom>().Explosion();
-                        isHide = true;
+                        petData.isHide = true;
                         GamePlay.Instance.OnPetJump?.Invoke();
                         Next(data.First().Value, origin, true);
                         return;
@@ -88,21 +87,21 @@ public class PetComponent : MonoBehaviour
                     {
                         transform.localEulerAngles = new Vector3(0, 0, 0);
                         petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");
-                        isBusy = false;
+                        petData.isBusy = false;
                     });
                 });
     }
 
     public void Run(Dictionary<int, BaseData> data, Vector2 originCoordinates)
     {
-        isBusy = true;
+        petData.isBusy = true;
         GameObject obj = data.First().Value.obj;
         if ((GamePlay.Instance.petManager.CheckPetExist(data.First().Value.coordinates))
-                || (obj.GetComponent<BaseComponent>().type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked && obj.GetComponent<BaseComponent>().isHide == false)
-                || (obj.GetComponent<BaseComponent>().type == BaseType.Boom && obj.GetComponent<BaseComponent>().isHide == false)
-                || obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
-                || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
-                || obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
+                || (obj.GetComponent<BaseComponent>().baseData.type == BaseType.Lock && !obj.GetComponent<SpecialTileLock>().isUnlocked && obj.GetComponent<BaseComponent>().baseData.isHide == false)
+                || (obj.GetComponent<BaseComponent>().baseData.type == BaseType.Boom && obj.GetComponent<BaseComponent>().baseData.isHide == false)
+                || obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapUpDown
+                || obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapLeftUp
+                || obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapLeftDown)
         {
             Bounce(data, originCoordinates);
             return;
@@ -110,7 +109,7 @@ public class PetComponent : MonoBehaviour
         petData.petModelData.model.GetComponent<Animator>().Play("Roll");
         petData.baseCoordinates = data.First().Value.coordinates;
         BaseComponent baseComponent = data.First().Value.obj.GetComponent<BaseComponent>();
-        bool isStop = data.First().Value.obj.GetComponent<BaseComponent>().type == BaseType.Stop;
+        bool isStop = data.First().Value.obj.GetComponent<BaseComponent>().baseData.type == BaseType.Stop;
         Vector3 destination = new Vector3(baseComponent.spawnPoint.transform.position.x, 1, baseComponent.spawnPoint.transform.position.z);
         bool isJump = isStop;
         System.Random random = new System.Random();
@@ -118,7 +117,7 @@ public class PetComponent : MonoBehaviour
             SoundManager.Instance.PlaySound("preRoll");
 
         GamePlay.Instance.OnPetJump?.Invoke();
-        if(!isStop)isHide = true;
+        if(!isStop)petData.isHide = true;
 
         transform.DOLocalMoveY(5, 0.3f).OnComplete(() =>
         {
@@ -135,7 +134,7 @@ public class PetComponent : MonoBehaviour
                     })
                     .OnComplete(() =>
                     {
-                        isBusy = false;
+                        petData.isBusy = false;
                         if (isStop)
                         {
                             petData.petModelData.model.GetComponent<Animator>().Play("Idle_A");

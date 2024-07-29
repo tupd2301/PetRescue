@@ -36,7 +36,7 @@ public class TutorialManager : MonoBehaviour
         switch (GamePlay.Instance.currentLevelData.level)
         {
             case 0:
-                PetData petData = GamePlay.Instance.petManager.pets.FirstOrDefault(x => x.petComponent.isHide == false);
+                PetData petData = GamePlay.Instance.petManager.pets.FirstOrDefault(x => x.petComponent.petData.isHide == false);
                 if (petData != null && petData.petComponent != null)
                 {
                     SpawnHand(petData.petComponent.transform);
@@ -46,9 +46,9 @@ public class TutorialManager : MonoBehaviour
                 if (listTrigger["lvl9"] == 0)
                 {
                     BaseData baseData = GamePlay.Instance.baseManager.bases
-                    .FirstOrDefault(x => x.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
-                    || x.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
-                    || x.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown);
+                    .FirstOrDefault(x => x.obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapUpDown
+                    || x.obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapLeftUp
+                    || x.obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapLeftDown);
                     if (baseData != null)
                     {
                         baseData.obj.GetComponentInChildren<BaseTrigger>().onBaseClickedForTutorial += () =>

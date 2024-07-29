@@ -22,7 +22,7 @@ public class PetManager : MonoBehaviour
     }
     public int GetPetCount(bool isHide = false)
     {
-        return pets.FindAll(x => x.petComponent.isHide == isHide).Count;
+        return pets.FindAll(x => x.petComponent.petData.isHide == isHide).Count;
     }
     public int GetTotalPetCount()
     {
@@ -52,8 +52,9 @@ public class PetManager : MonoBehaviour
         obj.transform.localEulerAngles = new Vector3(0, 0, 0);
         PetModelData petModelData = SpawnModel(obj.transform, direction);
         PetData petData = new PetData(id, direction, petModelData, obj.GetComponent<PetComponent>(), baseData.coordinates);
+        petData.originCoordinates = baseData.coordinates;
         obj.GetComponent<PetComponent>().SetData(petData);
-        obj.GetComponent<PetComponent>().isHide = false;
+        obj.GetComponent<PetComponent>().petData.isHide = false;
         obj.SetActive(false);
         pets.Add(petData);
     }
@@ -93,12 +94,12 @@ public class PetManager : MonoBehaviour
 
         }
         GamePlay.Instance.StartCoroutine(GamePlay.Instance.uiManager.ShowIngameTopContent());
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
         GamePlay.Instance.UpdateTopContentUI();
     }
     public bool CheckPetExist(Vector2 coordinates)
     {
-        if (pets.FirstOrDefault(x => x.baseCoordinates == coordinates && x.petComponent.isHide == false) != null) return true;
+        if (pets.FirstOrDefault(x => x.baseCoordinates == coordinates && x.petComponent.petData.isHide == false) != null) return true;
         return false;
     }
     public PetData GetPetByCoordinates(Vector2 coordinates)
@@ -125,19 +126,24 @@ public class PetData
     public HexDirection direction;
     public PetModelData petModelData;
     public Vector2 baseCoordinates;
+    public Vector2 originCoordinates;
     public PetComponent petComponent;
+    public bool isHide;
+    public bool isBusy;
     public PetData()
     {
 
     }
 
-    public PetData(int id, HexDirection direction, PetModelData petModelData, PetComponent petComponent, Vector2 baseCoordinates = default(Vector2))
+    public PetData(int id, HexDirection direction, PetModelData petModelData, PetComponent petComponent, Vector2 baseCoordinates = default(Vector2), bool isHide = false, bool isBusy = false)
     {
         this.id = id;
         this.direction = direction;
         this.petModelData = petModelData;
         this.petComponent = petComponent;
         this.baseCoordinates = baseCoordinates;
+        this.isHide = isHide;
+        this.isBusy = isBusy;
     }
 
 }

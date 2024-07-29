@@ -18,10 +18,6 @@ public class BaseComponent : MonoBehaviour
     public GameObject spawnPoint;
     public BaseData baseData;
 
-    public bool isHide = false;
-
-    public BaseType type;
-
     [SerializeField] private List<BaseModelData> baseModelDatas = new List<BaseModelData>();
     [SerializeField] private List<GameObject> grassModels = new List<GameObject>();
 
@@ -41,7 +37,7 @@ public class BaseComponent : MonoBehaviour
 
     public void SetType(BaseType type)
     {
-        this.type = type;
+        baseData.type = type;
     }
 
     public void RandomGrassModel()
@@ -58,7 +54,7 @@ public class BaseComponent : MonoBehaviour
         grassModels.ForEach(x => x.SetActive(false));
         baseModelDatas.FirstOrDefault(x => x.name == name).obj.SetActive(true);
         Debug.Log(name);
-        if (type == BaseType.SwapUpDown || type == BaseType.SwapLeftUp || type == BaseType.SwapLeftDown)
+        if (baseData.type == BaseType.SwapUpDown || baseData.type == BaseType.SwapLeftUp || baseData.type == BaseType.SwapLeftDown)
         {
             _swapUI.SetActive(true);
         }
@@ -75,13 +71,13 @@ public class BaseComponent : MonoBehaviour
 
     public void OnBaseClicked()
     {
-        switch (type)
+        switch (baseData.type)
         {
             case BaseType baseType when baseType == BaseType.Normal || baseType == BaseType.Stop:
                 GetComponentInChildren<Animator>().Play("Bounce");
                 if (GamePlay.Instance?.petManager.CheckPetExist(baseData.coordinates) == false) return;
                 PetComponent pet = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates).petComponent;
-                if (pet && !pet.isHide && !pet.isBusy)
+                if (pet && !pet.petData.isHide && !pet.petData.isBusy)
                 {
                     pet.Run(GamePlay.Instance.baseManager.GetBaseDestination(pet.petData), pet.petData.baseCoordinates);
                     GamePlay.Instance.Move();
@@ -91,7 +87,7 @@ public class BaseComponent : MonoBehaviour
                 GetComponentInChildren<Animator>().Play("Bounce");
                 if (GamePlay.Instance?.petManager.CheckPetExist(baseData.coordinates) == false) return;
                 PetComponent petLock = GamePlay.Instance?.petManager?.GetPetByCoordinates(baseData.coordinates).petComponent;
-                if (petLock && !petLock.isHide && GetComponent<SpecialTileLock>().isUnlocked && !petLock.isBusy)
+                if (petLock && !petLock.petData.isHide && GetComponent<SpecialTileLock>().isUnlocked && !petLock.petData.isBusy)
                 {
                     petLock.Run(GamePlay.Instance.baseManager.GetBaseDestination(petLock.petData), petLock.petData.baseCoordinates);
                     GamePlay.Instance.Move();

@@ -27,7 +27,7 @@ public class BaseManager : MonoBehaviour
             isShowCoordinate = value;
             foreach (var item in bases)
             {
-                if (item.obj.GetComponent<BaseComponent>().isHide == false)
+                if (item.obj.GetComponent<BaseComponent>().baseData.isHide == false)
                     item.obj.GetComponent<BaseComponent>().ShowCoordinate(isShowCoordinate);
             }
         }
@@ -51,7 +51,7 @@ public class BaseManager : MonoBehaviour
 
     public BaseData GetRandomBaseEmpty()
     {
-        List<BaseData> list = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false && GamePlay.Instance.petManager.CheckPetExist(x.coordinates) == false).ToList();
+        List<BaseData> list = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == false && GamePlay.Instance.petManager.CheckPetExist(x.coordinates) == false).ToList();
         return list[Random.Range(0, list.Count)];
     }
 
@@ -111,35 +111,37 @@ public class BaseManager : MonoBehaviour
     }
     public IEnumerator SinkBases(List<BaseData> baseDatas, float timeScale = 1f)
     {
-        List<BaseData> sortedList = baseDatas.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
+        List<BaseData> sortedList = baseDatas.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == false).ToList();
         int total = sortedList.Count;
         Debug.Log(total);
         for (int i = 0; i < total; i++)
         {
             System.Random random = new System.Random();
             int index = random.Next(0, sortedList.Count);
-            if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
+            if (sortedList[index].obj.GetComponent<BaseComponent>().baseData.isHide) continue;
             sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f * timeScale).SetEase(Ease.Linear);
-            sortedList[index].obj.GetComponent<BaseComponent>().isHide = true;
+            sortedList[index].obj.GetComponent<BaseComponent>().baseData.isHide = true;
             sortedList.Remove(sortedList[index]);
             yield return new WaitForSeconds(random.Next(0, 5) * 0.05f * timeScale);
         }
+        SaveData.Instance.Save();
     }
     public IEnumerator SinkAll()
     {
-        List<BaseData> sortedList = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false).ToList();
+        List<BaseData> sortedList = bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == false).ToList();
         int total = sortedList.Count;
         yield return new WaitForSeconds(1f);
         for (int i = 0; i < total; i++)
         {
             System.Random random = new System.Random();
             int index = random.Next(0, sortedList.Count);
-            if (sortedList[index].obj.GetComponent<BaseComponent>().isHide) continue;
+            if (sortedList[index].obj.GetComponent<BaseComponent>().baseData.isHide) continue;
             sortedList[index].obj.transform.DOLocalMoveY(-3.5f, 1f).SetEase(Ease.Linear);
             // sortedList[index].obj.GetComponent<BaseComponent>().CallSplashVFX();
             sortedList.Remove(sortedList[index]);
             yield return new WaitForSeconds(random.Next(0, 5) * 0.05f);
         }
+        SaveData.Instance.Save();
     }
 
     public List<Vector2> GetSandList(List<int> board)
@@ -196,15 +198,16 @@ public class BaseManager : MonoBehaviour
                 BaseData newBase = new BaseData();
                 newBase.id = newX * middle + y;
                 newBase.coordinates = new Vector2(newX, y);
+                newBase.originCoordinates = new Vector2(newX, y);
                 newBase.obj = baseObj;
                 bases.Add(newBase);
                 baseObj.GetComponent<BaseComponent>().baseData = newBase;
-                baseObj.GetComponent<BaseComponent>().isHide = !activeBoardList.Contains(new Vector2(newX, y));
-                if (baseObj.GetComponent<BaseComponent>().isHide)
-                    baseObj.GetComponent<BaseComponent>().type = BaseType.Hide;
+                baseObj.GetComponent<BaseComponent>().baseData.isHide = !activeBoardList.Contains(new Vector2(newX, y));
+                if (baseObj.GetComponent<BaseComponent>().baseData.isHide)
+                    baseObj.GetComponent<BaseComponent>().baseData.type = BaseType.Hide;
                 else
                 {
-                    baseObj.GetComponent<BaseComponent>().type = BaseType.Normal;
+                    baseObj.GetComponent<BaseComponent>().baseData.type = BaseType.Normal;
 
                 }
                 if (sandListVector2.Contains(new Vector2(newX, y)))
@@ -247,34 +250,34 @@ public class BaseManager : MonoBehaviour
         {
             case -1:
                 gameObj.SetActive(false);
-                gameObj.GetComponent<BaseComponent>().isHide = true;
+                gameObj.GetComponent<BaseComponent>().baseData.isHide = true;
                 break;
             case 0:
                 break;
             case 7:
-                gameObj.GetComponent<BaseComponent>().type = BaseType.SwapUpDown;
+                gameObj.GetComponent<BaseComponent>().baseData.type = BaseType.SwapUpDown;
                 gameObj.GetComponent<BaseComponent>().SetModel("swap7");
                 break;
             case 8:
-                gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftDown;
+                gameObj.GetComponent<BaseComponent>().baseData.type = BaseType.SwapLeftDown;
                 gameObj.GetComponent<BaseComponent>().SetModel("swap8");
                 break;
             case 9:
-                gameObj.GetComponent<BaseComponent>().type = BaseType.SwapLeftUp;
+                gameObj.GetComponent<BaseComponent>().baseData.type = BaseType.SwapLeftUp;
                 gameObj.GetComponent<BaseComponent>().SetModel("swap9");
                 break;
             case 10:
-                gameObj.GetComponent<BaseComponent>().type = BaseType.Stop;
+                gameObj.GetComponent<BaseComponent>().baseData.type = BaseType.Stop;
                 gameObj.GetComponent<BaseComponent>().SetModel("stop");
                 break;
             case 11:
-                gameObj.GetComponent<BaseComponent>().type = BaseType.Lock;
+                gameObj.GetComponent<BaseComponent>().baseData.type = BaseType.Lock;
                 gameObj.GetComponent<BaseComponent>().SetModel("lock");
                 SpecialTileLock lockTile = gameObj.AddComponent<SpecialTileLock>();
                 lockTile.count = GamePlay.Instance.GetValues(valueData.trueCoordinates)[2];
                 break;
             case 12:
-                gameObj.GetComponent<BaseComponent>().type = BaseType.Boom;
+                gameObj.GetComponent<BaseComponent>().baseData.type = BaseType.Boom;
                 gameObj.GetComponent<BaseComponent>().SetModel("boom");
                 SpecialTileBoom boomTile = gameObj.AddComponent<SpecialTileBoom>();
                 break;
@@ -317,7 +320,7 @@ public class BaseManager : MonoBehaviour
         currentX = (int)sortedList[0].coordinates.x;
         foreach (BaseData item in sortedList)
         {
-            if (item.obj.GetComponent<BaseComponent>().isHide)
+            if (item.obj.GetComponent<BaseComponent>().baseData.isHide)
             {
                 item.obj.GetComponent<BaseComponent>().main.SetActive(false);
                 item.obj.SetActive(true);
@@ -326,7 +329,7 @@ public class BaseManager : MonoBehaviour
             {
                 if (currentX != (int)item.coordinates.x)
                 {
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.3f/sortedList.Count);
                 }
                 item.obj.SetActive(true);
                 item.obj.GetComponent<BaseComponent>().RandomGrassModel();
@@ -376,15 +379,15 @@ public class BaseManager : MonoBehaviour
                 break;
             default: break;
         }
-        BaseData baseData = bases.FirstOrDefault(x => x.coordinates == des && x.obj.GetComponent<BaseComponent>().isHide == false);
+        BaseData baseData = bases.FirstOrDefault(x => x.coordinates == des && x.obj.GetComponent<BaseComponent>().baseData.isHide == false);
         if (baseData != null)
         {
             if (GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates)
-                || baseData.obj.GetComponent<BaseComponent>().type == BaseType.Stop
-                || baseData.obj.GetComponent<BaseComponent>().type == BaseType.Boom
-                || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapUpDown
-                || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftUp
-                || baseData.obj.GetComponent<BaseComponent>().type == BaseType.SwapLeftDown)
+                || baseData.obj.GetComponent<BaseComponent>().baseData.type == BaseType.Stop
+                || baseData.obj.GetComponent<BaseComponent>().baseData.type == BaseType.Boom
+                || baseData.obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapUpDown
+                || baseData.obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapLeftUp
+                || baseData.obj.GetComponent<BaseComponent>().baseData.type == BaseType.SwapLeftDown)
             {
                 data = baseData;
                 return;
@@ -401,7 +404,7 @@ public class BaseManager : MonoBehaviour
     {
         Vector2 portal1Coordinates = new Vector2();
         Vector2 portal2Coordinates = new Vector2();
-        switch (baseData.obj.GetComponent<BaseComponent>().type)
+        switch (baseData.obj.GetComponent<BaseComponent>().baseData.type)
         {
             case BaseType.SwapUpDown:
                 portal1Coordinates = new Vector2(baseData.coordinates.x, baseData.coordinates.y + 1);
@@ -420,7 +423,7 @@ public class BaseManager : MonoBehaviour
         }
         PetData pet1 = GamePlay.Instance.petManager.GetPetByCoordinates(portal1Coordinates);
         PetData pet2 = GamePlay.Instance.petManager.GetPetByCoordinates(portal2Coordinates);
-        if ((pet1 != null && pet1.petComponent.isBusy) || (pet2 != null && pet2.petComponent.isBusy)) return false;
+        if ((pet1 != null && pet1.petComponent.petData.isBusy) || (pet2 != null && pet2.petComponent.petData.isBusy)) return false;
         if (pet1 != null)
         {
             pet1.baseCoordinates = portal2Coordinates;
@@ -460,8 +463,11 @@ public class BaseData
 {
     public int id;
     public Vector2 coordinates;
-
+    public Vector2 originCoordinates;
+    public Dictionary<string, float> listPara = new Dictionary<string, float>();
     public GameObject obj;
+    public bool isHide = false;
+    public BaseType type;
 }
 [System.Serializable]
 public class ValueData

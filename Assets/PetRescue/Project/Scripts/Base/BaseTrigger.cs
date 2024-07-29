@@ -15,7 +15,7 @@ public class BaseTrigger : MonoBehaviour
     }
     void Update()
     {
-        if (Input.touchCount > 0 && baseComponent.isHide == false)
+        if (Input.touchCount > 0 && baseComponent.baseData.isHide == false)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began && currentFingerId != touch.fingerId)
@@ -25,7 +25,7 @@ public class BaseTrigger : MonoBehaviour
                 return;
             }
         }
-        if ((Input.GetMouseButtonDown(0)) && baseComponent.isHide == false)
+        if ((Input.GetMouseButtonDown(0)) && baseComponent.baseData.isHide == false)
         {
             TriggerTouch();
         }

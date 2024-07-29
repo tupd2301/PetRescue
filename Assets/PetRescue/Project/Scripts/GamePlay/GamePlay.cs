@@ -162,15 +162,19 @@ public class GamePlay : MonoBehaviour
     }
     void Start()
     {
-        
-        // currentLevelData = allLevelData[level];
-        // baseManager.Init(allLevelData[level].boardDesign);
-        // move = allLevelData[level].moveMax;
-        // UpdateMoveText();
-        // testInput = $"{{{levelConfigs[level + 1]}}}";
-        Init(allLevelData[level]);
-        envManager.Init();
-        OnPetJump = UnlockAll;
+        SaveData.Instance.Load();
+        if (SaveData.Instance.GetGameProcessData() == null || SaveData.Instance.GetGameProcessData().bases.Count == 0)
+        {
+            level = 0;
+            Init(allLevelData[level]);
+            envManager.Init();
+            OnPetJump = UnlockAll;
+        }
+        else
+        {
+            level = SaveData.Instance.GetGameProcessData().level;
+            StartCoroutine(ReadProgress());
+        }
     }
 
     void Init(LevelData levelData)
@@ -196,7 +200,7 @@ public class GamePlay : MonoBehaviour
     public BaseData GetBaseEnvironment(int posID = 0)
     {
         List<BaseData> list = new List<BaseData>();
-        list = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == true).ToList();
+        list = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == true).ToList();
         int maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
         int maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
         switch (posID)
@@ -241,6 +245,7 @@ public class GamePlay : MonoBehaviour
         move--;
         UpdateMoveText();
         UpdateTopContentUI();
+        SaveData.Instance.Save();
         if (move <= 0)
         {
             CheckWin();
@@ -278,6 +283,55 @@ public class GamePlay : MonoBehaviour
             Reset();
             Init(allLevelData[level]);
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StopAllCoroutines();
+            StartCoroutine(ReadProgress());
+        }
+    }
+
+    IEnumerator ReadProgress()
+    {
+        SaveData.Instance.Load();
+        GameProcessData gameProcessData = SaveData.Instance.GetGameProcessData();
+        level = gameProcessData.level;
+        Debug.Log(level + " " + gameProcessData.moves);
+        Reset();
+        Init(allLevelData[level]);
+        move = gameProcessData.moves;
+        UpdateMoveText();
+        yield return new WaitForSeconds(2);
+        foreach (var pet in gameProcessData.pets)
+        {
+            PetData petData = petManager.GetPetByCoordinates(pet.originCoordinates);
+            // petData.petModelData = pet.petModelData;
+            if (petData == null) Debug.Log("Pet not found:" + pet.originCoordinates);
+            petData.baseCoordinates = pet.baseCoordinates;
+            petData.isHide = pet.isHide;
+            Vector3 basePos = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == pet.baseCoordinates).obj.transform.position;
+            if (pet.isHide)
+            {
+                Debug.Log("Hide");
+                OnPetJump?.Invoke();
+                petData.petComponent.transform.localPosition = new Vector3(100, 0.1f, 100);
+            }
+            else
+            {
+                petData.petComponent.transform.position = new Vector3(basePos.x, 1, basePos.z);
+            }
+        }
+        List<BaseData> list = new List<BaseData>();
+        foreach (var item in gameProcessData.bases)
+        {
+            BaseData baseData = baseManager.bases.FirstOrDefault(x => x.originCoordinates == item.originCoordinates);
+            baseData.listPara = item.listPara;
+            if (item.isHide) list.Add(baseData);
+        }
+        Debug.Log("Sink " + list.Count);
+        StartCoroutine(baseManager.SinkBases(list, 0.1f));
+        UpdateTopContentUI();
+        tutorialManager.ShowTutorial();
     }
 
     public void NextLevel()
@@ -327,8 +381,11 @@ public class GamePlay : MonoBehaviour
         isFinish = true;
         Debug.Log("Win");
         SoundManager.Instance.PlaySound("win");
+        SaveData.Instance.Save();
         StartCoroutine(baseManager.SinkAll());
         StartCoroutine(uiManager.ShowWinPopup(2));
+        SaveData.Instance.Save();
+
     }
     void Lose()
     {
@@ -337,11 +394,13 @@ public class GamePlay : MonoBehaviour
         SoundManager.Instance.PlaySound("lose");
         StartCoroutine(baseManager.SinkAll());
         StartCoroutine(uiManager.ShowLosePopup(2));
+        SaveData.Instance.Save();
+
     }
 
     public void UnlockAll()
     {
-        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().isHide == false && x.obj.GetComponent<SpecialTileLock>()).ToList();
+        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == false && x.obj.GetComponent<SpecialTileLock>()).ToList();
         foreach (var item in collection)
         {
             if (item.obj.GetComponent<SpecialTileLock>().isUnlocked == false)

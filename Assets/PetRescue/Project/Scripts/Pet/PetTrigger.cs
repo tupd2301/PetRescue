@@ -34,7 +34,7 @@ public class PetTrigger : MonoBehaviour
         
         if (coll.Raycast(ray, out hit, 100))
         {
-            if(GetComponent<PetComponent>().isHide == false || petComponent.isBusy == true) return;
+            if(GetComponent<PetComponent>().petData.isHide == false || petComponent.petData.isBusy == true) return;
             Transform t = petComponent.petData.petModelData.model.transform;
             int rotateX = t.localEulerAngles.x == -150f ? 0 : -150;
             t.DOLocalMoveY(-2.5f, 0.3f).OnComplete(() => t.DOLocalMoveY(rotateX == -150 ? 1.3f : -0.5f, 0.3f));

@@ -4,25 +4,30 @@ using UnityEngine;
 
 public class SpecialTileLock : MonoBehaviour
 {
-
-    private int _count;
     public int count
     {
         get
         {
-            return _count;
+            if(GetComponent<BaseComponent>().baseData.listPara.ContainsKey("countLock") == false)
+            {
+                GetComponent<BaseComponent>().baseData.listPara.Add("countLock", 0);
+            }
+            return (int)GetComponent<BaseComponent>().baseData.listPara["countLock"];
         }
         set
         {
-            _count = value;
-            gameObject.GetComponent<BaseComponent>().SetLockText(_count);
+            if(GetComponent<BaseComponent>().baseData.listPara.ContainsKey("countLock") == false)
+            {
+                GetComponent<BaseComponent>().baseData.listPara.Add("countLock", value);
+            }
+            GetComponent<BaseComponent>().baseData.listPara["countLock"] = value;
+            gameObject.GetComponent<BaseComponent>().SetLockText(value);
         }
     }
     public bool isUnlocked = false;
     public void Unlock()
     {
         count--;
-        Debug.Log(count);
         if (count == 0)
         {
             isUnlocked = true;

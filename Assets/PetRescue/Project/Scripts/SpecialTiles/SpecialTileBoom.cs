@@ -15,7 +15,7 @@ public class SpecialTileBoom : MonoBehaviour
             {
                 PetComponent petComponent = GamePlay.Instance.petManager.GetPetByCoordinates(item.coordinates).petComponent;
                 petComponent.Next(item, petComponent.transform.position + new Vector3(random.Next(-1, 1), 0, random.Next(-1, 1)), true);
-                petComponent.isHide = true;
+                petComponent.petData.isHide = true;
             }
         }
         SoundManager.Instance.PlaySound("pop");
