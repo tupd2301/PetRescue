@@ -33,6 +33,7 @@ public class PetComponent : MonoBehaviour
                 Debug.Log("Next");
                 // baseData.obj.GetComponent<BaseComponent>().CallSplashVFX();
                 SoundManager.Instance.PlaySound("splash");
+                Handheld.Vibrate();
                 transform.DOLocalMoveY(-2f, 0.5f).OnComplete(() =>
                 {
                     petData.petModelData.model.GetComponent<Animator>().Play("Run", -1);
@@ -69,6 +70,7 @@ public class PetComponent : MonoBehaviour
         transform.DOMove(destination - direction * 1, 0.4f * (data.First().Key - 1))
                 .OnComplete(() =>
                 {
+                    Handheld.Vibrate();
                     if (baseComponent.GetComponent<SpecialTileBoom>() != null)
                     {
                         baseComponent.GetComponent<SpecialTileBoom>().Explosion();

@@ -17,6 +17,10 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowWinPopup(float delay = 0)
     {
+        for (int i = 0; i < delay*1000; i+=300)
+        {
+            Handheld.Vibrate();
+        }
         yield return new WaitForSeconds(delay);
         if(_winPopupUI == null)
         _winPopupUI = Instantiate(Resources.Load<WinPopupUI>("Prefabs/UIPrefabs/WinPopup"), canvas.transform).GetComponent<WinPopupUI>();
@@ -29,6 +33,10 @@ public class UIManager : MonoBehaviour
     }
     public IEnumerator ShowLosePopup(float delay = 0)
     {
+        for (int i = 0; i < delay*1000; i+=300)
+        {
+            Handheld.Vibrate();
+        }
         yield return new WaitForSeconds(delay);
         if(_losePopupUI == null)
         _losePopupUI = Instantiate(Resources.Load<LosePopupUI>("Prefabs/UIPrefabs/LosePopup"), canvas.transform).GetComponent<LosePopupUI>();
