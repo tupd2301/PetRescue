@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     private WinPopupUI _winPopupUI; 
     private LosePopupUI _losePopupUI;
     private IngameTopContentUI _ingameTopContentUI;
+    [SerializeField] private Animator _cloudAnimator;
 
     public void UpdateTopContentUI()
     {
@@ -59,5 +60,13 @@ public class UIManager : MonoBehaviour
     {
         if(_ingameTopContentUI)
         _ingameTopContentUI.Show(false);
+    }
+    public void ShowCloud()
+    {
+        _cloudAnimator.Play("Start");
+    }
+    public void HideCloud()
+    {
+        _cloudAnimator.Play("End");
     }
 }

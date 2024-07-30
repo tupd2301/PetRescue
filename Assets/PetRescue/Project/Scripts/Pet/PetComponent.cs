@@ -39,7 +39,7 @@ public class PetComponent : MonoBehaviour
                     transform.DOLocalMoveY(-0.1f, 0.3f).OnComplete(() =>
                     {
                         GamePlay.Instance.CheckWin();
-                        // _ripplesVFX.SetActive(true);
+                        _ripplesVFX.SetActive(true);
                         Vector3 des = transform.position + (transform.position - oriPos);
                         float distance = Vector3.Distance(transform.position, des);
                         transform.DOLocalRotate(new Vector3(0, transform.eulerAngles.x + 50, 0), 1f).SetLoops(-1, LoopType.Incremental);

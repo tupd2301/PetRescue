@@ -295,6 +295,7 @@ public class GamePlay : MonoBehaviour
 
     IEnumerator ReadProgress()
     {
+        uiManager.ShowCloud();
         SaveData.Instance.Load();
         GameProcessData gameProcessData = SaveData.Instance.GetGameProcessData();
         level = gameProcessData.level;
@@ -334,6 +335,7 @@ public class GamePlay : MonoBehaviour
         StartCoroutine(baseManager.SinkBases(list, 0.1f));
         UpdateTopContentUI();
         tutorialManager.ShowTutorial();
+        uiManager.HideCloud();
     }
 
     public void NextLevel()
