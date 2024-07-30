@@ -167,14 +167,15 @@ public class GamePlay : MonoBehaviour
         {
             level = 0;
             Init(allLevelData[level]);
-            envManager.Init();
-            OnPetJump = UnlockAll;
         }
         else
         {
             level = SaveData.Instance.GetGameProcessData().level;
             StartCoroutine(ReadProgress());
         }
+        envManager.Init();
+        OnPetJump = UnlockAll;
+        OnPetJump += () => { uiManager.UpdateTopContentUI(); tutorialManager.ShowTutorial();};
     }
 
     void Init(LevelData levelData)
@@ -188,6 +189,7 @@ public class GamePlay : MonoBehaviour
         testInput = $"{{{levelData.config}}}";
         uiManager.UpdateTopContentUI();
         tutorialManager.InitTriggers();
+        SaveData.Instance.Save();
     }
 
     public void UpdateTopContentUI()

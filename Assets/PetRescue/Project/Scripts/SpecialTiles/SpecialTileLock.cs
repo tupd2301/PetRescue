@@ -27,7 +27,8 @@ public class SpecialTileLock : MonoBehaviour
     public bool isUnlocked = false;
     public void Unlock()
     {
-        count--;
+        Debug.Log("Unlock: "+count);
+        count = count - 1;
         if (count == 0)
         {
             isUnlocked = true;

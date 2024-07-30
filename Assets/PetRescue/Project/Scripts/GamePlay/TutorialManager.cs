@@ -65,7 +65,7 @@ public class TutorialManager : MonoBehaviour
                 if (listTrigger["lvl27"] == 0)
                 {
                     BaseData baseData = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(-1, 0));
-                    if (baseData != null)
+                    if (baseData != null && GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates))
                     {
                         baseData.obj.GetComponentInChildren<BaseTrigger>().onBaseClickedForTutorial += () =>
                         {
@@ -81,7 +81,7 @@ public class TutorialManager : MonoBehaviour
                 if (listTrigger["lvl32"] == 0)
                 {
                     BaseData baseData = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == new Vector2(1, 0));
-                    if (baseData != null)
+                    if (baseData != null && GamePlay.Instance.petManager.CheckPetExist(baseData.coordinates))
                     {
                         baseData.obj.GetComponentInChildren<BaseTrigger>().onBaseClickedForTutorial += () =>
                         {
