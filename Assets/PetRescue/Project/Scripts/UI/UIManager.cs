@@ -63,10 +63,19 @@ public class UIManager : MonoBehaviour
     }
     public void ShowCloud()
     {
+        if(_cloudAnimator == null)
+        {
+            _cloudAnimator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/UIPrefabs/Clouds"),canvas.transform).GetComponent<Animator>();
+        }
         _cloudAnimator.Play("Start");
     }
     public void HideCloud()
     {
+        if(_cloudAnimator == null)
+        {
+            _cloudAnimator = Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/UIPrefabs/Clouds"),canvas.transform).GetComponent<Animator>();
+        }
         _cloudAnimator.Play("End");
+        Destroy(_cloudAnimator.gameObject, 5f);
     }
 }
