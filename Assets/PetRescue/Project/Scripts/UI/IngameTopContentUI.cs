@@ -5,17 +5,29 @@ using UnityEngine.UI;
 
 public class IngameTopContentUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _topContent;
-    [SerializeField] private Button _settingButton;
-    [SerializeField] private Text _levelText;
-    [SerializeField] private Text _movesText;
-    [SerializeField] private Text _totalTargetText;
-    [SerializeField] private Text _currentTargetText;
+    [SerializeField]
+    private GameObject _topContent;
+
+    [SerializeField]
+    private Button _settingButton;
+
+    [SerializeField]
+    private Text _levelText;
+
+    [SerializeField]
+    private Text _movesText;
+
+    [SerializeField]
+    private Text _totalTargetText;
+
+    [SerializeField]
+    private Text _currentTargetText;
 
     void Awake()
     {
-        _settingButton.onClick.AddListener(()=>GamePlay.Instance.ShowCheatInput());
+        _settingButton.onClick.AddListener(() => GamePlay.Instance.ShowSettingUI());
     }
+
     public void UpdateUI()
     {
         SetLevel();

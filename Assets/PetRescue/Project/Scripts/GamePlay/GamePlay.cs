@@ -9,10 +9,14 @@ using UnityEngine.UI;
 
 public class GamePlay : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _moveTxt;
-    [SerializeField] private TMP_InputField _inputField;
-    [SerializeField] private Button _levelButton;
-    public GameObject cheatObject;
+    [SerializeField]
+    private TMP_Text _moveTxt;
+
+    [SerializeField]
+    private TMP_InputField _inputField;
+
+    [SerializeField]
+    private Button _levelButton;
     public GameObject cameraParent;
     public CameraControl cameraControl;
     public static GamePlay Instance;
@@ -37,11 +41,10 @@ public class GamePlay : MonoBehaviour
 
     public System.Action OnPetJump;
 
-
-
     //-------
     [Header("Test (T)")]
-    [SerializeField] private string testInput;
+    [SerializeField]
+    private string testInput;
 
     public void Test()
     {
@@ -53,12 +56,11 @@ public class GamePlay : MonoBehaviour
             UpdateTopContentUI();
         }
     }
-    public void ShowCheatInput()
-    {
-        cheatObject.SetActive(!cheatObject.activeSelf);
-        Debug.Log(cheatObject.activeSelf);
-    }
 
+    public void ShowSettingUI()
+    {
+        uiManager.ShowSettingUI();
+    }
 
     void Awake()
     {
@@ -121,7 +123,8 @@ public class GamePlay : MonoBehaviour
                 for (int k = 1; k <= num; k++)
                 {
                     List<int> ints = new List<int>();
-                    if (lineStrings.Count() <= j + k) break;
+                    if (lineStrings.Count() <= j + k)
+                        break;
                     if (lineStrings[j + k].Contains('['))
                     {
                         string[] valueString = lineStrings[j + k].Split("[")[1].Split("]");
@@ -160,10 +163,14 @@ public class GamePlay : MonoBehaviour
         }
         return levelDatas;
     }
+
     void Start()
     {
         SaveData.Instance.Load();
-        if (SaveData.Instance.GetGameProcessData() == null || SaveData.Instance.GetGameProcessData().bases.Count == 0)
+        if (
+            SaveData.Instance.GetGameProcessData() == null
+            || SaveData.Instance.GetGameProcessData().bases.Count == 0
+        )
         {
             level = 0;
             Init(allLevelData[level]);
@@ -175,7 +182,11 @@ public class GamePlay : MonoBehaviour
         }
         envManager.Init();
         OnPetJump = UnlockAll;
-        OnPetJump += () => { uiManager.UpdateTopContentUI(); tutorialManager.ShowTutorial();};
+        OnPetJump += () =>
+        {
+            uiManager.UpdateTopContentUI();
+            tutorialManager.ShowTutorial();
+        };
     }
 
     void Init(LevelData levelData)
@@ -185,7 +196,9 @@ public class GamePlay : MonoBehaviour
         baseManager.Init(levelData.boardDesign);
         move = levelData.moveMax;
         UpdateMoveText();
-        cameraControl.UpdateCamera(new Vector2(levelData.lineConfigs.Count, levelData.lineConfigs.Max(x => x.size)));
+        cameraControl.UpdateCamera(
+            new Vector2(levelData.lineConfigs.Count, levelData.lineConfigs.Max(x => x.size))
+        );
         testInput = $"{{{levelData.config}}}";
         uiManager.UpdateTopContentUI();
         tutorialManager.InitTriggers();
@@ -198,34 +211,35 @@ public class GamePlay : MonoBehaviour
         tutorialManager.ShowTutorial();
     }
 
-
     public BaseData GetBaseEnvironment(int posID = 0)
     {
         List<BaseData> list = new List<BaseData>();
-        list = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == true).ToList();
+        list = baseManager
+            .bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == true)
+            .ToList();
         int maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
         int maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
         switch (posID)
         {
-            case 1://top-right
+            case 1: //top-right
                 maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
                 list = list.FindAll(x => x.coordinates.y == maxY).ToList();
                 maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
                 list = list.FindAll(x => x.coordinates.x == maxX).ToList();
                 break;
-            case -1://top-left
+            case -1: //top-left
                 maxY = (int)list.OrderByDescending(x => x.coordinates.y).ToList()[0].coordinates.y;
                 list = list.FindAll(x => x.coordinates.y == maxY).ToList();
                 maxX = (int)list.OrderBy(x => x.coordinates.x).ToList()[0].coordinates.x;
                 list = list.FindAll(x => x.coordinates.x == maxX).ToList();
                 break;
-            case 2://bottom-right
+            case 2: //bottom-right
                 maxY = (int)list.OrderBy(x => x.coordinates.y).ToList()[0].coordinates.y;
                 list = list.FindAll(x => x.coordinates.y == maxY).ToList();
                 maxX = (int)list.OrderByDescending(x => x.coordinates.x).ToList()[0].coordinates.x;
                 list = list.FindAll(x => x.coordinates.x == maxX).ToList();
                 break;
-            case -2://bottom-left
+            case -2: //bottom-left
                 maxY = (int)list.OrderBy(x => x.coordinates.y).ToList()[0].coordinates.y;
                 list = list.FindAll(x => x.coordinates.y == maxY).ToList();
                 maxX = (int)list.OrderBy(x => x.coordinates.x).ToList()[0].coordinates.x;
@@ -238,7 +252,8 @@ public class GamePlay : MonoBehaviour
     public void UpdateMoveText()
     {
         int number = move;
-        if (move < 0) number = 0;
+        if (move < 0)
+            number = 0;
         _moveTxt.text = "Moves: " + number.ToString();
     }
 
@@ -253,6 +268,7 @@ public class GamePlay : MonoBehaviour
             CheckWin();
         }
     }
+
     public void SpawnPets()
     {
         List<ValueData> petVector3 = baseManager.SpawnByValues(currentLevelData);
@@ -309,10 +325,15 @@ public class GamePlay : MonoBehaviour
         {
             PetData petData = petManager.GetPetByCoordinates(pet.originCoordinates);
             // petData.petModelData = pet.petModelData;
-            if (petData == null) Debug.Log("Pet not found:" + pet.originCoordinates);
+            if (petData == null)
+                Debug.Log("Pet not found:" + pet.originCoordinates);
             petData.baseCoordinates = pet.baseCoordinates;
             petData.isHide = pet.isHide;
-            Vector3 basePos = GamePlay.Instance.baseManager.bases.FirstOrDefault(x => x.coordinates == pet.baseCoordinates).obj.transform.position;
+            Vector3 basePos = GamePlay
+                .Instance.baseManager.bases.FirstOrDefault(x =>
+                    x.coordinates == pet.baseCoordinates
+                )
+                .obj.transform.position;
             if (pet.isHide)
             {
                 Debug.Log("Hide");
@@ -327,9 +348,12 @@ public class GamePlay : MonoBehaviour
         List<BaseData> list = new List<BaseData>();
         foreach (var item in gameProcessData.bases)
         {
-            BaseData baseData = baseManager.bases.FirstOrDefault(x => x.originCoordinates == item.originCoordinates);
+            BaseData baseData = baseManager.bases.FirstOrDefault(x =>
+                x.originCoordinates == item.originCoordinates
+            );
             baseData.listPara = item.listPara;
-            if (item.isHide) list.Add(baseData);
+            if (item.isHide)
+                list.Add(baseData);
         }
         Debug.Log("Sink " + list.Count);
         StartCoroutine(baseManager.SinkBases(list, 0.1f));
@@ -342,7 +366,8 @@ public class GamePlay : MonoBehaviour
     {
         CancelInvoke(nameof(NextLevel));
         StopAllCoroutines();
-        if (level >= allLevelData.Count - 1) return;
+        if (level >= allLevelData.Count - 1)
+            return;
         level++;
         Reset();
         Init(allLevelData[level]);
@@ -380,6 +405,7 @@ public class GamePlay : MonoBehaviour
             }
         }
     }
+
     void Win()
     {
         isFinish = true;
@@ -389,8 +415,8 @@ public class GamePlay : MonoBehaviour
         StartCoroutine(baseManager.SinkAll());
         StartCoroutine(uiManager.ShowWinPopup(2));
         SaveData.Instance.Save();
-
     }
+
     void Lose()
     {
         isFinish = true;
@@ -399,12 +425,16 @@ public class GamePlay : MonoBehaviour
         StartCoroutine(baseManager.SinkAll());
         StartCoroutine(uiManager.ShowLosePopup(2));
         SaveData.Instance.Save();
-
     }
 
     public void UnlockAll()
     {
-        List<BaseData> collection = baseManager.bases.FindAll(x => x.obj.GetComponent<BaseComponent>().baseData.isHide == false && x.obj.GetComponent<SpecialTileLock>()).ToList();
+        List<BaseData> collection = baseManager
+            .bases.FindAll(x =>
+                x.obj.GetComponent<BaseComponent>().baseData.isHide == false
+                && x.obj.GetComponent<SpecialTileLock>()
+            )
+            .ToList();
         foreach (var item in collection)
         {
             if (item.obj.GetComponent<SpecialTileLock>().isUnlocked == false)
@@ -460,6 +490,7 @@ public class LevelData
         }
     }
 }
+
 [System.Serializable]
 public class LineConfig
 {
