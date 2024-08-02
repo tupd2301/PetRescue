@@ -27,7 +27,7 @@ MonoBehaviour:
   enableFoamHQ: 1
   foamNoiseScaleHQ: 0.1
   foamNoiseSpeedHQ: 1
-  shorelineFoamStrength: 0.5
+  shorelineFoamStrength: 0.05
   crestFoamStrength: 0.11
   crestMaxDepth: 0.1
   slopeFoamStrength: 0.265
